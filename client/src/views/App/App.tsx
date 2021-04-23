@@ -7,6 +7,7 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { Home } from '../Home/Home';
 import Login from '../Login/Login';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
+import Video from '../Video';
 
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
@@ -27,6 +28,8 @@ const App = (): ReactElement => {
                     <Switch>
                         <PrivateRoute exact path="/" component={Home} />
                         <PrivateRoute exact path="/room" component={Room} />
+                        <PrivateRoute exact path="/video" component={Video} />
+                        <PrivateRoute exact path="/video/:roomId" component={Room} />
                         <Route exact path="/login" component={Login} />
                         <Route component={NotFound} />
                     </Switch>
