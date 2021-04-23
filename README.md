@@ -1,4 +1,4 @@
-# Your app name
+# Skiller
 
 Your app description
 
@@ -6,8 +6,13 @@ Check the deployment: [Click]()
 
 ## Team Members 
 
--   Bob
--   Rob
+-   Mateusz Cabała
+-   Małgorzata Frydrychowicz
+-   Magdalena Socha
+-   Marcin Pawezka
+-   Lila Religa
+-   Marcin Woś
+-   Asia Zioła
 
 ## Features
 
