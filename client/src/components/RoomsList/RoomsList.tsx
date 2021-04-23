@@ -3,10 +3,12 @@ import { css } from '@emotion/react';
 import firebase from 'firebase';
 import React, { useState } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { newRoom } from '../../db/newRoom';
 
 const RoomsList = () => {
     const [roomName, setRoomName] = useState('');
+    const history = useHistory();
     const [rooms, loading, error] = useCollection(firebase.firestore().collection('Rooms'), {
         snapshotListenOptions: { includeMetadataChanges: true }
     });
@@ -15,13 +17,14 @@ const RoomsList = () => {
         setRoomName(event.target.value);
     };
 
-    // const handleRoomNameSubmit = () => {
-    //     newRoom(roomName);
-    //     setRoomName('');
-    // };
+    const handleRoomNameSubmit = async () => {
+        setRoomName('');
+        const id = await newRoom(roomName);
+        console.log('🚀 ~ file: RoomsList.tsx ~ line 23 ~ handleRoomNameSubmit ~ id', id);
+        history.push(`/room/${id}`, { isHost: true });
+    };
 
     if (loading) return <Spinner />;
-    rooms.docs.map((d) => console.log(d.data().name));
 
     return (
         <>
@@ -52,12 +55,12 @@ const RoomsList = () => {
                                             font-size: 10px;
                                         `}
                                     >
-                                        <a href={`/video/${room.id}`}>test</a>
+                                        <Link to={`/room/${room.id}`}>test</Link>
                                     </Button>
                                 </Box>
                             ))}
                         </div>
-                        {/* <Input
+                        <Input
                             css={css`
                                 margin-top: 50px;
                             `}
@@ -65,8 +68,8 @@ const RoomsList = () => {
                             placeholder="Pokój"
                             value={roomName}
                             onChange={handleRoomNameChange}
-                        /> */}
-                        {/* <Button
+                        />
+                        <Button
                             css={css`
                                 margin-top: 10px;
                                 background-color: #673ab7;
@@ -79,7 +82,7 @@ const RoomsList = () => {
                             onClick={handleRoomNameSubmit}
                         >
                             Stwórz pokój
-                        </Button> */}
+                        </Button>
                     </div>
                 </Box>
             </Box>

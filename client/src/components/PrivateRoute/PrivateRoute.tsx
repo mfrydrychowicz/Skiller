@@ -13,8 +13,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         return <div>Erroor</div>;
     }
 
-    console.log(user);
-
     return (
         <Route
             {...rest}

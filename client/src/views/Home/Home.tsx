@@ -6,7 +6,6 @@ import RoomsList from '../../components/RoomsList/RoomsList';
 export const Home = (): ReactElement => {
     return (
         <>
-            <h1>This is an example app</h1>
             <RoomsList />
         </>
     );
