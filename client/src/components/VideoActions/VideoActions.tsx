@@ -27,7 +27,15 @@ export default function VideoActions() {
     };
 
     return (
-        <Flex flexDirection="row" bgColor="red" display="inline-flex" alignItems="center">
+        <Flex
+            flexDirection="row"
+            bgColor="red"
+            display="inline-flex"
+            alignItems="center"
+            paddingX={4}
+            paddingY={4}
+            rounded="md"
+        >
             <HStack spacing="2em">
                 <Icon as={isCameraOn ? VideocamOffOutline : VideocamOutline} onClick={handleCamera} />
                 <Icon as={isMuted ? MicOffOutline : MicOutline} onClick={handleMute} />
