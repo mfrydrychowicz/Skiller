@@ -6,12 +6,13 @@ const NewQuestion: React.FC = (): JSX.Element => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-   const onToggleIsOpen = () => setIsOpen(true)
+   const onToggleIsOpen = () => setIsOpen(!isOpen)
+
 
     return(
     <>
         <Button onClick={() => onToggleIsOpen()}>Add New Question</Button>
-        <NewQuestionModal isOpen={isOpen} />
+        <NewQuestionModal isOpen={isOpen} onClose={onToggleIsOpen} />
     </>)
 };
 
