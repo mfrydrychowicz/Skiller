@@ -7,7 +7,6 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { Home } from '../Home/Home';
 import Login from '../Login/Login';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
-import Video from '../Video';
 import TopNavBar from '../../components/TopNavBar/TopNavBar';
 
 // customized colors,fonts, basically everything for Chakra (optional)
