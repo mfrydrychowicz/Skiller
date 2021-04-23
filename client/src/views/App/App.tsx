@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NotFound from '../../components/NotFound';
+import Room from '../Room';
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 
 // customized colors,fonts, basically everything for Chakra (optional)
@@ -47,6 +48,7 @@ const App = (): ReactElement => {
                 <ChakraProvider theme={customTheme}>
                     <Switch>
                         <Route exact path="/"  component={Home} />
+                        <Route exact path="/room"  component={Room} />
                         <Route component={NotFound} />
                     </Switch>
                 </ChakraProvider>
