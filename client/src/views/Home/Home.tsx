@@ -14,7 +14,10 @@ export const Home = (): ReactElement => {
         <>
             <h1>This is an example app</h1>
             {rooms.docs.map((d) => (
-                <li key={d.id}>{d.data().name}</li>
+                <div key={d.id}>
+                    {d.data().name}
+                    <a href={`/video/${d.data().name}`}>join</a>
+                </div>
             ))}
         </>
     );

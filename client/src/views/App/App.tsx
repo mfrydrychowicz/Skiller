@@ -29,8 +29,6 @@ const App = (): ReactElement => {
                     <TopNavBar />
                     <Switch>
                         <PrivateRoute exact path="/" component={Home} />
-                        <PrivateRoute exact path="/room" component={Room} />
-                        <PrivateRoute exact path="/video" component={Video} />
                         <PrivateRoute exact path="/video/:roomId" component={Room} />
                         <Route exact path="/login" component={Login} />
                         <Route component={NotFound} />
