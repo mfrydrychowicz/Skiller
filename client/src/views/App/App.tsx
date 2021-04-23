@@ -3,6 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NotFound from '../../components/NotFound';
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
+import { Home } from '../Home/Home';
 
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
@@ -12,35 +13,10 @@ const colors = {
       700: "#2a69ac",
     },
   }
-  const customTheme = extendTheme({ colors });
 
-
-export const Home = (): ReactElement => {
-
-    const [jsonData, setJsonData] = useState("");
-
-        useEffect(() => {
-        const url = '/api/example';
-            axios.get(url).then((json) => {
-                setJsonData(JSON.stringify(json.data));
-            });
-    }, []);
-
-
-    return (
-        <>
-            <h1>This is an example app</h1>
-            {jsonData}
-        </>
-    );
-};
-
-
-
+const customTheme = extendTheme({ colors });
 
 const App = (): ReactElement => {
-
-
     return (
         <div>
             <BrowserRouter>
