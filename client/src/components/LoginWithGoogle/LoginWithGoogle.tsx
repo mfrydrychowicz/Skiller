@@ -2,6 +2,7 @@ import { Button } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
 import firebase from 'firebase';
 import { useHistory } from 'react-router-dom';
+import { newUser } from '../../db/newUser';
 
 const LoginWithGoogle = () => {
     const history = useHistory();
@@ -15,7 +16,7 @@ const LoginWithGoogle = () => {
             // const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
-            console.log('🚀 ~ file: LoginWithGoogle.tsx ~ line 15 ~ login ~ user', user);
+            await newUser(user);
             history.push('/');
         } catch (error) {
             console.log(error);
