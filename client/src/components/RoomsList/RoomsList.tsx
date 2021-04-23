@@ -1,20 +1,15 @@
-import { Box, Button, Input } from '@chakra-ui/react';
+import { Box, Button, Input, Spinner } from '@chakra-ui/react';
 import { css } from '@emotion/react';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import firebase from 'firebase';
+import React, { useState } from 'react';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
-// import useChat from '../../views/useChat';
 
-const Video = () => {
+const RoomsList = () => {
     const [roomName, setRoomName] = useState('');
-    const rooms = ['1', '2', '3'];
-    // const { newRoom, newRooms } = useChat();
-
-    // useEffect(() => {
-    //     axios.get('/api/rooms').then(({ data }) => {
-    //         setRooms(data);
-    //     });
-    // }, [newRooms]);
+    const [rooms, loading, error] = useCollection(firebase.firestore().collection('Rooms'), {
+        snapshotListenOptions: { includeMetadataChanges: true }
+    });
 
     const handleRoomNameChange = (event: any) => {
         setRoomName(event.target.value);
@@ -25,14 +20,18 @@ const Video = () => {
     //     setRoomName('');
     // };
 
+    if (loading) return <Spinner />;
+    rooms.docs.map((d) => console.log(d.data().name));
+
     return (
         <>
             <Box maxWidth="sm">
                 <Box m={4} textAlign="center">
                     <div>
                         <div>
-                            {rooms.map((r) => (
+                            {rooms.docs.map((room) => (
                                 <Box
+                                    key={room.id}
                                     css={css`
                                         display: flex;
                                         padding: 5px;
@@ -43,7 +42,7 @@ const Video = () => {
                                             text-transform: uppercase;
                                         `}
                                     >
-                                        {r}
+                                        {room.data().name}
                                     </Box>
                                     <Button
                                         variant="contained"
@@ -53,7 +52,7 @@ const Video = () => {
                                             font-size: 10px;
                                         `}
                                     >
-                                        <a href={`/video/${r}`}>test</a>
+                                        <a href={`/video/${room.id}`}>test</a>
                                     </Button>
                                 </Box>
                             ))}
@@ -88,4 +87,4 @@ const Video = () => {
     );
 };
 
-export default Video;
+export default RoomsList;
