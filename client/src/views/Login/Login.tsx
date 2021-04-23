@@ -1,5 +1,11 @@
+import LoginWithGoogle from '../../components/LoginWithGoogle/LoginWithGoogle';
+
 const Login = () => {
-    return <div></div>;
+    return (
+        <div>
+            <LoginWithGoogle />
+        </div>
+    );
 };
 
 export default Login;

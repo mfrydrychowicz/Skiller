@@ -1,8 +1,11 @@
 import { Button } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
 import firebase from 'firebase';
+import { useHistory } from 'react-router-dom';
 
 const LoginWithGoogle = () => {
+    const history = useHistory();
+
     const login = async () => {
         try {
             const provider = new firebase.auth.GoogleAuthProvider();
@@ -13,6 +16,7 @@ const LoginWithGoogle = () => {
             // The signed-in user info.
             const user = result.user;
             console.log('🚀 ~ file: LoginWithGoogle.tsx ~ line 15 ~ login ~ user', user);
+            history.push('/');
         } catch (error) {
             console.log(error);
         }

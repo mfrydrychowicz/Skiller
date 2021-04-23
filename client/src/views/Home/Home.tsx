@@ -1,7 +1,6 @@
 import firebase from 'firebase';
 import { ReactElement } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import LoginWithGoogle from '../../components/LoginWithGoogle/LoginWithGoogle';
 
 export const Home = (): ReactElement => {
     const [rooms, loading, error] = useCollection(firebase.firestore().collection('Rooms'), {
@@ -14,7 +13,6 @@ export const Home = (): ReactElement => {
     return (
         <>
             <h1>This is an example app</h1>
-            <LoginWithGoogle />
             {rooms.docs.map((d) => (
                 <li key={d.id}>{d.data().name}</li>
             ))}
