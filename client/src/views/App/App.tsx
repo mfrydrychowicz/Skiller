@@ -9,6 +9,7 @@ import Login from '../Login/Login';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 import Video from '../Video';
 import TopNavBar from '../../components/TopNavBar/TopNavBar';
+import NewQuestion from '../../components/new-question/NewQuestion';
 
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
@@ -17,7 +18,7 @@ const colors = {
         800: '#153e75',
         700: '#2a69ac'
     }
-};
+}
 
 const customTheme = extendTheme({ colors });
 
