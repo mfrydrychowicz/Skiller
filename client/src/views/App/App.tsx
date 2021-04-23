@@ -29,7 +29,7 @@ const App = (): ReactElement => {
                     <TopNavBar />
                     <Switch>
                         <PrivateRoute exact path="/" component={Home} />
-                        <PrivateRoute exact path="/video/:roomId" component={Room} />
+                        <PrivateRoute exact path="/room/:roomId" component={Room} />
                         <Route exact path="/login" component={Login} />
                         <Route component={NotFound} />
                     </Switch>

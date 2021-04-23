@@ -7,7 +7,6 @@ import VideoActions from '../../components/VideoActions/VideoActions';
 export const Home = (): ReactElement => {
     return (
         <>
-            <h1>This is an example app</h1>
             <RoomsList />
             <VideoActions />
         </>

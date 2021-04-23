@@ -40,7 +40,8 @@ const Room = (props) => {
     const userVideo = useRef() as MutableRefObject<any>;
     const peersRef = useRef([]) as MutableRefObject<any>;
     const roomID = props.match.params.roomID;
-
+    const isHost = props.location?.state?.isHost ?? false;
+    console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
     console.log(props.match.params);
 
     useEffect(() => {
