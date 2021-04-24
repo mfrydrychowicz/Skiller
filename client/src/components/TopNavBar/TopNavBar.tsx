@@ -1,5 +1,5 @@
 import { Image, Flex, Heading, Text, Spacer, Icon, HStack, useColorMode, Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { IoTrophyOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
@@ -15,8 +15,8 @@ import Logout from '../Logout/Logout';
 
 export default function TopNavBar() {
     const [user] = useAuthState(auth);
-    const [points, plusOne, lod, err] = usePoints();
     const history = useHistory();
+    const [points, setPoints] = useState(0);
 
     const login = async () => {
         try {
@@ -37,17 +37,24 @@ export default function TopNavBar() {
     const logout = () => {
         firebase.auth().signOut();
     };
-    const { colorMode, toggleColorMode } = useColorMode();
 
-    const LikeMe = () => {
-        console.log(plusOne());
-    };
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const changeColorMode = (newMode) => {
         if (colorMode !== newMode) {
             toggleColorMode();
         }
     };
+
+    useEffect(() => {
+        firebase
+            .firestore()
+            .collection('Users')
+            .doc(user.uid)
+            .onSnapshot((d) => {
+                setPoints(d.data().points);
+            });
+    }, [user]);
 
     const colorModeIcon =
         colorMode === 'light' ? (
@@ -83,16 +90,13 @@ export default function TopNavBar() {
                     <HStack spacing="2em">
                         <Icon as={IoTrophyOutline} color="brand.orange" h={6} w={6} />
                         <Text mr="2" color="brand.orange">
-                            {points} pt.
+                            {points}
                         </Text>
                         <Text mr="2" color="brand.orange">
                             {user.displayName}
                         </Text>
                         {colorModeIcon}
                         <Logout />
-                        <Button colorScheme="orange" variant="solid" size="md" onClick={LikeMe}>
-                            SelfLike
-                        </Button>
                     </HStack>
                 ) : (
                     <Button colorScheme="orange" variant="solid" size="md" onClick={login}>

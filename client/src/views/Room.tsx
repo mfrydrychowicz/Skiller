@@ -270,7 +270,6 @@ const Room = (props) => {
             screenTrackRef.current.onended();
         }
     };
-    const [likes, LikePresentation] = usePoints('ajdi');
 
     return (
         <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.lightgrey' : 'brand.middlegrey'}>

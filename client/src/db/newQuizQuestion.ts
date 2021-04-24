@@ -6,7 +6,7 @@ export const addNewQuiz = async (userQuestion: IQuizQuestion, roomId: string) =>
         const question = await firebase
             .firestore()
             .collection('QuizQuestions')
-            .add({ ...userQuestion, roomId, expirationTime: Date.now() + 60 * 1000 });
+            .add({ ...userQuestion, roomId, expirationTime: Date.now() + 10 * 1000 });
         const questionFromDb = await await question.get();
         return questionFromDb;
     } catch (e) {
