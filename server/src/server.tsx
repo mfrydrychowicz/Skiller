@@ -79,7 +79,6 @@ io.on('connection', (socket) => {
         delete socketList[socket.id];
         socket.broadcast.to(roomId).emit('FE-user-leave', { userId: socket.id, userName: [socket.id] });
         socket.broadcast.emit('user left', socket.id);
-        io.sockets.sockets[socket.id].leave();
     });
 
     socket.on('disconnect', () => {
