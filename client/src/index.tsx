@@ -18,7 +18,7 @@ const colors = {
 export const customTheme = extendTheme({
     colors,
     config: {
-        initialColorMode: 'dark',
+        initialColorMode: 'light',
         useSystemColorMode: false
     }
 });

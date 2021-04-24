@@ -58,7 +58,11 @@ const RoomsList = () => {
             <Box d="flex" flexDirection="row" justifyContent="space-around" m={2}>
                 <InputGroup w="30%">
                     <InputLeftElement pointerEvents="none" children={<Icon as={SearchIcon} />} />
-                    <Input type="room" placeholder="Find room" />
+                    <Input
+                        type="room"
+                        placeholder="Find room"
+                        backgroundColor={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
+                    />
                 </InputGroup>
                 <Button
                     leftIcon={<AddIcon />}
