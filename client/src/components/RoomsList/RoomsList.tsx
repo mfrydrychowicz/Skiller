@@ -73,10 +73,11 @@ const RoomsList = () => {
             <Flex
                 wrap="wrap"
                 maxWidth="100%"
+                minHeight='86vh'
                 justify="center"
                 bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
             >
-                <Text w="100%" pl={16} fontWeight="bold">
+                <Text w="100%" pl={16} fontWeight="bold" mt={5}>
                     Active rooms
                 </Text>
                 {rooms.docs.map((room) => (
@@ -87,15 +88,6 @@ const RoomsList = () => {
                     </Box>
                 ))}
             </Flex>
-            <Button
-                leftIcon={<AddIcon />}
-                sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
-                onClick={onOpen}
-                colorScheme="orange"
-            >
-                {' '}
-                Add New Room
-            </Button>
             <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
                 <DrawerOverlay>
                     <DrawerContent>
