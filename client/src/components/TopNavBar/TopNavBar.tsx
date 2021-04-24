@@ -47,13 +47,15 @@ export default function TopNavBar() {
     };
 
     useEffect(() => {
-        firebase
-            .firestore()
-            .collection('Users')
-            .doc(user.uid)
-            .onSnapshot((d) => {
-                setPoints(d.data().points);
-            });
+        if (user) {
+            firebase
+                .firestore()
+                .collection('Users')
+                .doc(user.uid)
+                .onSnapshot((d) => {
+                    setPoints(d.data().points);
+                });
+        }
     }, [user]);
 
     const colorModeIcon =
