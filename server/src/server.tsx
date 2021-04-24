@@ -46,7 +46,7 @@ const users = {};
 
 const socketToRoom = {};
 
-let socketList = [];
+const socketList = [];
 
 io.on('connection', (socket) => {
     socket.on('join room', (roomID, isHost = false) => {
@@ -62,7 +62,10 @@ io.on('connection', (socket) => {
         // }
         console.log('users[roomID]', users[roomID]);
         let isOnlyChild = false;
-        if (isHost || users[roomID] === undefined || users[roomID].length === 0) {
+        if (isHost) {
+            users[roomID] = [socket.id];
+        }
+        if (users[roomID] === undefined || users[roomID].length === 0) {
             users[roomID] = [socket.id];
             isOnlyChild = true;
         }
@@ -73,7 +76,7 @@ io.on('connection', (socket) => {
 
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
-        socketList[socket.id] = { video: true, audio: true };
+        // socketList[socket.id] = { video: true, audio: true };
 
         socket.emit('all users', usersInThisRoom, isOnlyChild);
     });
