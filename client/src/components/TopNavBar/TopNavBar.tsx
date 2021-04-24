@@ -7,14 +7,15 @@ import { auth } from '../../firebase/firebase';
 import { useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import { newUser } from '../../db/newUser';
+import { usePoints } from '../../hooks/usePoints';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Logout from '../Logout/Logout';
 
 // Use this https://codepen.io/sosuke/pen/Pjoqqp to get filter for desired icon color
 
 export default function TopNavBar() {
-    const [points, setPoints] = useState(0);
     const [user] = useAuthState(auth);
+    const [points, plusOne] = usePoints(user.uid);
     const history = useHistory();
 
     const login = async () => {
@@ -37,6 +38,11 @@ export default function TopNavBar() {
         firebase.auth().signOut();
     };
     const { colorMode, toggleColorMode } = useColorMode();
+
+    const LikeMe = () => {
+        console.log(plusOne);
+        plusOne();
+    };
 
     const changeColorMode = (newMode) => {
         if (colorMode !== newMode) {
@@ -85,6 +91,9 @@ export default function TopNavBar() {
                         </Text>
                         {colorModeIcon}
                         <Logout />
+                        <Button colorScheme="orange" variant="solid" size="md" onClick={LikeMe}>
+                            SelfLike
+                        </Button>
                     </HStack>
                 ) : (
                     <Button colorScheme="orange" variant="solid" size="md" onClick={login}>
