@@ -81,16 +81,18 @@ const RoomsList = () => {
                     Add New Room
                 </Button>
             </Box>
+
+            <Text w="100%" fontWeight="bold" mt={5} textAlign="center" fontSize="3em" color="brand.orange">
+                Active rooms
+            </Text>
+
             <Flex
                 wrap="wrap"
                 maxWidth="100%"
-                minHeight='86vh'
+                minHeight="86vh"
                 justify="center"
                 bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
             >
-                <Text w="100%" pl={16} fontWeight="bold" mt={5}>
-                    Active rooms
-                </Text>
                 {rooms.docs.map((room) => (
                     <Box m="20px" key={room.id} w="30%">
                             <RoomCard id={room.id} name={room.data().name} user={room.data().user} />

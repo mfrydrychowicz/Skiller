@@ -24,7 +24,7 @@ export const usePoints = (userID?) => {
             .update({ points: value?.data().points + 1 });
     };
     console.log(value?.data());
-    return [value?.data().points, plusOne, loading, error];
+    return [value?.data()?.points, plusOne, loading, error];
 };
 
 export const useGetPoints = () => {

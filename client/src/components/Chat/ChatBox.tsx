@@ -2,20 +2,29 @@ import { Container, Box, VStack, useColorMode } from '@chakra-ui/react';
 import { Spinner } from '@chakra-ui/react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
-import { useState } from 'react';
+import { useRef, useState, useEffect, MutableRefObject } from 'react';
 import useChat from '../../hooks/useChat';
+import 'emoji-mart/css/emoji-mart.css';
 
 const ChatBox = ({ roomID }) => {
+    const { colorMode } = useColorMode();
+
+    const { messages, loading, error, sendMessage } = useChat(roomID);
+    const messagesEndRef = useRef() as MutableRefObject<any>;
+
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
     /*
     text: string;
     authorId: string;
     photoURL: string;
     roomId: string;
     createdAt: string;*/
-
-    const { colorMode } = useColorMode();
-
-    const { messages, loading, error, sendMessage } = useChat(roomID);
 
     return (
         <Container maxW="container.sm" height="100%">
@@ -42,6 +51,7 @@ const ChatBox = ({ roomID }) => {
                                 return <ChatMessage key={id} author={photoURL} message={text} />;
                             })
                         )}
+                        <div ref={messagesEndRef} />
                     </VStack>
                     <ChatInput onSubmit={sendMessage} />
                 </VStack>
