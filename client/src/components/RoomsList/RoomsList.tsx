@@ -89,9 +89,7 @@ const RoomsList = () => {
                 </Text>
                 {rooms.docs.map((room) => (
                     <Box m="20px" key={room.id} w="30%">
-                        <Link to={`/room/${room.id}`}>
                             <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
-                        </Link>
                     </Box>
                 ))}
             </Flex>
