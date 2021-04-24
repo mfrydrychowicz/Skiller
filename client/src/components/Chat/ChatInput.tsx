@@ -11,7 +11,7 @@ const ChatInput = ({ onSubmit }) => {
         setValue('');
     };
     return (
-        <HStack>
+        <HStack display="flex" alignItems="center" h="10%">
             <Input
                 value={value}
                 onChange={handleChange}
