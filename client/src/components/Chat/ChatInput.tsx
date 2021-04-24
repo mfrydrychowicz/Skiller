@@ -20,7 +20,7 @@ const ChatInput = ({ onSubmit }) => {
                 placeholder="Type sth here"
                 bg="whiteAlpha"
             />
-            <IconButton aria-label="Send" onClick={sendMessage} icon={<Icon as={Send} />} />
+            <IconButton aria-label="Send" onClick={sendMessage} icon={<Icon as={Send} color="brand.orange" />} />
         </HStack>
     );
 };

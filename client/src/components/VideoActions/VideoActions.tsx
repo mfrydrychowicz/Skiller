@@ -29,7 +29,7 @@ export default function VideoActions() {
     return (
         <Flex
             flexDirection="row"
-            bgColor="red"
+            bgColor="brand.orange"
             display="inline-flex"
             alignItems="center"
             paddingX={4}
