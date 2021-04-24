@@ -1,4 +1,4 @@
-import { Container, Box, VStack } from '@chakra-ui/react';
+import { Container, Box, VStack, useColorMode } from '@chakra-ui/react';
 import { Spinner } from '@chakra-ui/react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
@@ -13,12 +13,15 @@ const ChatBox = ({ roomID }) => {
     roomId: string;
     createdAt: string;*/
 
+    const { colorMode } = useColorMode();
+
     const { messages, loading, error, sendMessage } = useChat(roomID);
+
     return (
         <Container maxW="container.sm" height="100%">
             <Box
                 padding="4"
-                bg="brand.darkgrey"
+                bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
                 d="flex"
                 direction="column"
                 justifyContent="space-between"

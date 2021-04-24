@@ -74,7 +74,7 @@ const RoomsList = () => {
                 wrap="wrap"
                 maxWidth="100%"
                 justify="center"
-                bg={colorMode === 'light' ? 'brand.lightgray' : 'brand.white'}
+                bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
             >
                 <Text w="100%" pl={16} fontWeight="bold">
                     Active rooms
