@@ -10,8 +10,10 @@ import {
     ModalOverlay, Textarea,
     useDisclosure
 } from '@chakra-ui/react';
-
 import {AddIcon} from '@chakra-ui/icons'
+import { IQuizQuestion } from '../../interfaces/QuizQuestion.interface';
+import {addNewQuiz} from '../../db/newQuizQuestion'
+
 type props = {
     isOpen: boolean,
     onClose: () => void
@@ -19,15 +21,26 @@ type props = {
 
 const NewQuestionModal = ({ isOpen, onClose }: props) => {
 
-    const [question, setQuestion] = useState('');
-    const [correctAnswer, setCorrectAnswer] = useState('');
-    const [notCorrect1, setNotCorrect1] = useState('');
-    const [notCorrect2, setNotCorrect2] = useState('');
-    const [notCorrect3, setNotCorrect3] = useState('');
+    const [question, setQuestion] = useState<string>('');
+    const [correctAnswer, setCorrectAnswer] = useState<string>('');
+    const [notCorrect1, setNotCorrect1] = useState<string>('');
+    const [notCorrect2, setNotCorrect2] = useState<string>('');
+    const [notCorrect3, setNotCorrect3] = useState<string>('');
 
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        const questionFromUser: IQuizQuestion = {
+            question,
+            answers : [correctAnswer, notCorrect1, notCorrect2, notCorrect3],
+            correctAnswer: correctAnswer
+        }
+
+        const quizQuestion = await addNewQuiz(questionFromUser)
+
+        console.log('🚀 ~ file: NewQuestionModal.tsx ~ line 41 ~ handleSubmit ~ quiz', quizQuestion);
+
+
         onClose();
     };
 
@@ -50,28 +63,40 @@ const NewQuestionModal = ({ isOpen, onClose }: props) => {
 
                         <FormControl id='correctAnswer' mb={5}>
                             <FormLabel>Correct Answer</FormLabel>
-                            <Input isRequired/>
+                            <Input
+                                isRequired
+                                onChange={(e) => setCorrectAnswer(e.target.value)}
+                            />
                         </FormControl>
 
                         <FormControl id='notCorrectAnswer1' mb={5}>
                             <FormLabel> Not Correct Answer</FormLabel>
-                            <Input isRequired/>
+                            <Input
+                                isRequired
+                                onChange={(e) => setNotCorrect1(e.target.value)}
+                            />
                         </FormControl>
 
                         <FormControl id='notCorrectAnswer2' mb={5}>
                             <FormLabel> Not Correct Answer</FormLabel>
-                            <Input isRequired/>
+                            <Input
+                                isRequired
+                                onChange={(e) => setNotCorrect2(e.target.value)}
+                            />
                         </FormControl>
 
                         <FormControl id='notCorrectAnswer3' mb={5}>
                             <FormLabel> Not Correct Answer</FormLabel>
-                            <Input isRequired/>
+                            <Input
+                                isRequired
+                                onChange={(e) => setNotCorrect3(e.target.value)}
+                            />
                         </FormControl>
                         <Button
                             type='submit'
                             colorScheme={'green'}
                             m='25px 0 25px 74%'
-                            isInline
+                            isinline
                             justyify='baseline'
                             leftIcon={<AddIcon />}
                         > Save</Button>
