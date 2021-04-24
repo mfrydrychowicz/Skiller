@@ -62,7 +62,7 @@ const RoomsList = () => {
 
     return (
         <>
-            <Box d="flex" flexDirection="row" justifyContent="space-around" m={2}>
+            <Box d="flex" flexDirection="row" justifyContent="space-between" m={4}>
                 <InputGroup w="30%">
                     <InputLeftElement pointerEvents="none" children={<Icon as={SearchIcon} />} />
                     <Input
@@ -82,7 +82,7 @@ const RoomsList = () => {
                 </Button>
             </Box>
 
-            <Text w="100%" fontWeight="bold" mt={5} textAlign="center" fontSize="3em" color="brand.orange">
+            <Text w="100%" fontWeight="bold" mt={5} textAlign="center" fontSize="2em" color="brand.orange">
                 Active rooms
             </Text>
 
@@ -95,7 +95,7 @@ const RoomsList = () => {
             >
                 {rooms.docs.map((room) => (
                     <Box m="20px" key={room.id} w="30%">
-                            <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
+                        <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
                     </Box>
                 ))}
             </Flex>
