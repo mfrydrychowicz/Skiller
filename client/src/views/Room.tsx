@@ -4,17 +4,10 @@ import Peer from 'simple-peer';
 import styled from 'styled-components';
 
 import { isTemplateTail } from 'typescript';
-import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button } from '@chakra-ui/react';
-import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
-import {
-    HandRightOutline,
-    HandRight,
-    MicOutline,
-    MicOffOutline,
-    VideocamOutline,
-    VideocamOffOutline,
-    LaptopOutline
-} from 'react-ionicons';
+import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button, useColorMode } from '@chakra-ui/react';
+import { FiCamera, FiCameraOff, FiMic, FiMicOff } from 'react-icons/fi';
+import { IoHandRight, IoHandRightOutline } from 'react-icons/io5';
+import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 
 import ChatBox from '../components/Chat/ChatBox';
 import { saveRoomInfo } from '../db/saveRoomInfo';
@@ -33,6 +26,10 @@ const StyledChat = styled.div`
     width: 30%;
     borderradius: 10px;
 `;
+
+StyledChat.defaultProps = {
+    colormode: 'light'
+};
 
 const Video = (props) => {
     const ref = useRef() as MutableRefObject<any>;
@@ -56,6 +53,9 @@ const Room = (props) => {
     const [screenShare, setScreenShare] = useState(false);
     const screenTrackRef = useRef() as MutableRefObject<any>;
     const doc = useDocumentDataOnce(firebase.firestore().collection('Rooms').doc(roomID));
+
+    const { colorMode } = useColorMode();
+
     console.log('🚀 ~ file: Room.tsx ~ line 51 ~ Room ~ doc', doc);
     const [userVideoAudio, setUserVideoAudio] = useState({
         localUser: { video: true, audio: true }
@@ -268,7 +268,7 @@ const Room = (props) => {
     };
 
     return (
-        <Flex direction="row" p={3} h="100%">
+        <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.white'}>
             <Grid h="100%" w="70%" templateRows="5fr 1fr" templateColumns="repeat(8, 1fr)">
                 <GridItem rowSpan={5} colSpan={8}>
                     {/* {userVideoAudio['localUser'].video ? null :} */}
@@ -285,22 +285,49 @@ const Room = (props) => {
                 <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
                     <Flex
                         flexDirection="row"
-                        bgColor="brand.orange"
+                        bgColor="brand.darkgrey"
+                        borderColor="brand.orange"
                         display="inline-flex"
                         alignItems="center"
                         paddingX={4}
-                        paddingY={4}
+                        paddingY={3}
                         rounded="md"
                     >
                         <HStack spacing="2em">
-                            <div onClick={toggleCameraAudio} data-switch="video">
+                            {/* <div onClick={toggleCameraAudio} data-switch="video">
                                 {'camera'}
                             </div>
                             <div onClick={toggleCameraAudio} data-switch="audio">
                                 audio
-                            </div>
-                            <Icon as={isHandRaised ? HandRight : HandRightOutline} onClick={handleHandRaise} />
-                            <Icon as={LaptopOutline} onClick={clickScreenSharing} />
+                            </div> */}
+                            <Icon
+                                as={isCameraOn ? FiCameraOff : FiCamera}
+                                onClick={handleCamera}
+                                h={6}
+                                w={6}
+                                color="brand.orange"
+                            />
+                            <Icon
+                                as={isMuted ? FiMicOff : FiMic}
+                                onClick={handleMute}
+                                h={6}
+                                w={6}
+                                color="brand.orange"
+                            />
+                            <Icon
+                                as={isHandRaised ? IoHandRight : IoHandRightOutline}
+                                onClick={handleHandRaise}
+                                h={6}
+                                w={6}
+                                color="brand.orange"
+                            />
+                            <Icon
+                                as={screenShare ? MdStopScreenShare : MdScreenShare}
+                                onClick={clickScreenSharing}
+                                h={6}
+                                w={6}
+                                color="brand.orange"
+                            />
                             <div onClick={goToBack}>Leave room</div>
                         </HStack>
                     </Flex>

@@ -1,7 +1,7 @@
 import { Container, Box, HStack, IconButton, Icon } from '@chakra-ui/react';
 import { Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Send } from 'react-ionicons';
+import { IoIosSend } from 'react-icons/io';
 
 const ChatInput = ({ onSubmit }) => {
     const [value, setValue] = useState('');
@@ -34,12 +34,7 @@ const ChatInput = ({ onSubmit }) => {
                 borderColor="brand.orange"
                 _hover={{ bg: 'brand.middlegrey' }}
                 variant="outline"
-                icon={
-                    <Icon
-                        as={Send}
-                        filter="invert(49%) sepia(69%) saturate(3966%) hue-rotate(359deg) brightness(103%) contrast(110%);"
-                    />
-                }
+                icon={<Icon as={IoIosSend} color="brand.orange" h={6} w={6} />}
             />
         </HStack>
     );
