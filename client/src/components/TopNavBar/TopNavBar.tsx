@@ -2,7 +2,6 @@ import { Image, Flex, Heading, Text, Spacer, Icon, HStack } from '@chakra-ui/rea
 import React, { useState } from 'react';
 import { TrophyOutline } from 'react-ionicons';
 import { Link } from 'react-router-dom';
-import logo from './logo.svg';
 
 export default function TopNavBar() {
     const [username, setUsername] = useState('username');
@@ -12,7 +11,7 @@ export default function TopNavBar() {
         <Flex bgColor="brand.darkgrey" paddingX="3em" height="4rem" alignItems="center">
             <Link to="/">
                 <HStack spacing="1em">
-                    <Image src={logo} alt="Skiller logo" height="3em" color="brand.orange" />
+                    <Image src={'./logo.svg'} alt="Skiller logo" height="3em" color="brand.orange" />
                     <Heading size="md" color="brand.orange">
                         SKILLER
                     </Heading>
