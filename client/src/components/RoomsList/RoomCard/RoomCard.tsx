@@ -23,7 +23,7 @@ const RoomCard = ({ id, name, user }: props) => {
             flexDirection="row"
             align="center"
             bg={colorMode === 'light' ? 'brand.purewhite' : 'brand.middlegrey'}
-            shadow="sm"
+            shadow="md"
             transform="scale(0.85)"
             transition="0.3s linear"
             _hover={{ transform: 'scale(1)', fontWeight: 'bold' }}
@@ -34,7 +34,7 @@ const RoomCard = ({ id, name, user }: props) => {
                     <Text size="xl" color="gray.400" textTransform="uppercase" mb={0} textAlign="center">
                         Room topic
                     </Text>
-                    <Text fontSize={24} sx={styles} color="gray.400" bgColor="none">
+                    <Text fontSize={24} sx={styles} bgColor="none">
                         {name}
                     </Text>
                 </Box>
