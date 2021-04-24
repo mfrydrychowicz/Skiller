@@ -9,6 +9,9 @@ import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button } from '@ch
 import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
 
 import ChatBox from '../components/Chat/ChatBox';
+import { saveRoomInfo } from '../db/saveRoomInfo';
+import { useDocumentDataOnce, useDocumentOnce } from 'react-firebase-hooks/firestore';
+import firebase from 'firebase';
 
 const StyledVideo = styled.video`
     background: black;
@@ -44,17 +47,25 @@ const Room = (props) => {
     const userStream = useRef() as MutableRefObject<any>;
     const [screenShare, setScreenShare] = useState(false);
     const screenTrackRef = useRef() as MutableRefObject<any>;
+    const doc = useDocumentDataOnce(firebase.firestore().collection('Rooms').doc(roomID));
+    console.log('🚀 ~ file: Room.tsx ~ line 51 ~ Room ~ doc', doc);
 
     const isHost = props.location?.state?.isHost ?? false;
+
     // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
     // console.log(props.match.params);
     useEffect(() => {
         socketRef.current = io('/');
+
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
             userVideo.current.srcObject = stream;
             userStream.current = stream;
             socketRef.current.emit('join room', roomID);
             socketRef.current.on('all users', (users) => {
+                if (isHost) {
+                    console.log(socketRef.current.id);
+                    saveRoomInfo(roomID, socketRef.current.id);
+                }
                 const peers = [];
                 users.forEach((userID) => {
                     const peer = createPeer(userID, socketRef.current.id, stream);
