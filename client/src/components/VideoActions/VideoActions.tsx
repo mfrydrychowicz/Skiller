@@ -6,10 +6,11 @@ import {
     MicOutline,
     MicOffOutline,
     VideocamOutline,
-    VideocamOffOutline
+    VideocamOffOutline,
+    LaptopOutline
 } from 'react-ionicons';
 
-export default function VideoActions() {
+export default function VideoActions(props) {
     const [isMuted, setIsMuted] = useState(false);
     const [isCameraOn, setIsCameraOn] = useState(false);
     const [isHandRaised, setIsHandRaised] = useState(false);
@@ -40,6 +41,7 @@ export default function VideoActions() {
                 <Icon as={isCameraOn ? VideocamOffOutline : VideocamOutline} onClick={handleCamera} />
                 <Icon as={isMuted ? MicOffOutline : MicOutline} onClick={handleMute} />
                 <Icon as={isHandRaised ? HandRight : HandRightOutline} onClick={handleHandRaise} />
+                <Icon as={LaptopOutline} onClick={props.clickScreenSharing} />
             </HStack>
         </Flex>
     );
