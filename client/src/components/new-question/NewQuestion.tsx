@@ -2,6 +2,9 @@ import { Button, Icon } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import NewQuestionModal from '../NewQuestionModal/NewQuestionModal';
 
+import {AddIcon} from '@chakra-ui/icons'
+
+
 const NewQuestion: React.FC = (): JSX.Element => {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +14,7 @@ const NewQuestion: React.FC = (): JSX.Element => {
 
     return(
     <>
-        <Button onClick={() => onToggleIsOpen()}>Add New Question</Button>
+        <Button onClick={() => onToggleIsOpen()} leftIcon={<AddIcon/>}>Add New Question</Button>
         <NewQuestionModal isOpen={isOpen} onClose={onToggleIsOpen} />
     </>)
 };
