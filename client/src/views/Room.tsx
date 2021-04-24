@@ -2,24 +2,22 @@ import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
-import useChat from '../hooks/useChat';
+
 import { isTemplateTail } from 'typescript';
-import { Icon, Box, IconButton } from '@chakra-ui/react';
+import { Icon, Box, IconButton, HStack, Flex } from '@chakra-ui/react';
 import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
 
-const Container = styled.div`
-    padding: 20px;
-    display: flex;
-    height: 100vh;
-    width: 90%;
-    margin: auto;
-    flex-wrap: wrap;
-`;
+import ChatBox from '../components/Chat/ChatBox';
 
 const StyledVideo = styled.video`
-    height: 100%;
-    width: 60%;
     background: black;
+    height: 80%;
+    width: 60%;
+`;
+
+const StyledChat = styled.div`
+    height: 80%;
+    width: 40%;
 `;
 
 const HostStyledVideo = styled.video`
@@ -55,7 +53,7 @@ const Room = (props) => {
     const userVideo = useRef() as MutableRefObject<any>;
     const peersRef = useRef([]) as MutableRefObject<any>;
     const roomID = props.match.params.roomId;
-    const { messages, loading, error, sendMessage } = useChat(roomID);
+
     const isHost = props.location?.state?.isHost ?? false;
     // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
     // console.log(props.match.params);
@@ -143,17 +141,27 @@ const Room = (props) => {
     }
 
     return (
-        <Box>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer) => {
-                return <Video key={peer.peerID} peer={peer.peer} />;
-            })}
-            <Box d="flex" justifyContent="center" w="60%" bgColor="blackAlpha.500">
-                <IconButton m={2} colorScheme="orange" aria-label="Screenshot" icon={<Icon as={FaCamera} />} />
-                <IconButton m={2} colorScheme="orange" aria-label="Microphone" icon={<Icon as={FaMicrophoneSlash} />} />
-                <IconButton m={2} colorScheme="orange" aria-label="HandUp" icon={<Icon as={FaHandPaper} />} />
+        <>
+            <Box>
+                <StyledVideo muted ref={userVideo} autoPlay playsInline />
+                {peers.map((peer) => {
+                    return <Video key={peer.peerID} peer={peer.peer} />;
+                })}
+                <Box d="flex" justifyContent="center" w="60%" bgColor="blackAlpha.500">
+                    <IconButton m={2} colorScheme="orange" aria-label="Screenshot" icon={<Icon as={FaCamera} />} />
+                    <IconButton
+                        m={2}
+                        colorScheme="orange"
+                        aria-label="Microphone"
+                        icon={<Icon as={FaMicrophoneSlash} />}
+                    />
+                    <IconButton m={2} colorScheme="orange" aria-label="HandUp" icon={<Icon as={FaHandPaper} />} />
+                </Box>
             </Box>
-        </Box>
+            <StyledChat>
+                <ChatBox roomID={roomID} />
+            </StyledChat>
+        </>
     );
 };
 
