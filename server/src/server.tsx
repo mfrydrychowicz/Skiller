@@ -46,6 +46,8 @@ const users = {};
 
 const socketToRoom = {};
 
+let socketList = [];
+
 io.on('connection', (socket) => {
     socket.on('join room', (roomID) => {
         if (users[roomID]) {
@@ -60,6 +62,7 @@ io.on('connection', (socket) => {
         }
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
+        socketList[socket.id] = { video: true, audio: true };
 
         socket.emit('all users', usersInThisRoom);
     });
@@ -70,6 +73,13 @@ io.on('connection', (socket) => {
 
     socket.on('returning signal', (payload) => {
         io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
+    });
+
+    socket.on('BE-leave-room', ({ roomId, leaver }) => {
+        delete socketList[socket.id];
+        socket.broadcast.to(roomId).emit('FE-user-leave', { userId: socket.id, userName: [socket.id] });
+        socket.broadcast.emit('user left', socket.id);
+        io.sockets.sockets[socket.id].leave();
     });
 
     socket.on('disconnect', () => {
