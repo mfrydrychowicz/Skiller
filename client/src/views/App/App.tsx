@@ -12,6 +12,7 @@ import NewQuestion from '../../components/new-question/NewQuestion';
 import { HallOfFame } from '../HallOfFame';
 import { DisplayQuiz } from '../../components/DisplayQuiz';
 
+
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
     brand: {

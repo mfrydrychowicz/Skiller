@@ -10,4 +10,4 @@ const firestore = firebase.firestore();
 
 // auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-export { auth, firestore };
+export { auth, firestore};
