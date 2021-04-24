@@ -6,11 +6,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalBody,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-import { VoiceActions } from './VoiceActions';
 import { addPoints } from '../db/addPoints';
 import { auth } from '../firebase/firebase';
 import { useState } from 'react';
