@@ -8,22 +8,18 @@ export default function TopNavBar() {
     const [points, setPoints] = useState(0);
 
     return (
-        <Flex bgColor="red" paddingX="3em" height="2em" alignItems="center">
+        <Flex bgColor="red" paddingX="3em" height="4em" alignItems="center">
             <Link to="/">
                 <HStack spacing="1em">
-                    <Image src="./logo.svg" alt="Skiller logo" height="1.5em" />
+                    <Image src="./logo.svg" alt="Skiller logo" height="3em" />
                     <Heading size="md">SKILLER</Heading>
                 </HStack>
             </Link>
             <Spacer />
             <HStack spacing="2em">
                 <Icon as={TrophyOutline} />
-                <Text mr="2" fontSize="12px">
-                    {points} pt
-                </Text>
-                <Text mr="2" fontSize="12px">
-                    {username}
-                </Text>
+                <Text mr="2">{points} pt</Text>
+                <Text mr="2">{username}</Text>
             </HStack>
         </Flex>
     );
