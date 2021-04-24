@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
 import useChat from '../hooks/useChat';
+import { isTemplateTail } from 'typescript';
 
 const Container = styled.div`
     padding: 20px;
@@ -18,6 +19,12 @@ const StyledVideo = styled.video`
     width: 50%;
 `;
 
+const HostStyledVideo = styled.video`
+    height: 80%;
+    width: 60%;
+    margin: 0 auto;
+`;
+
 const Video = (props) => {
     const ref = useRef() as MutableRefObject<any>;
 
@@ -27,7 +34,11 @@ const Video = (props) => {
         });
     }, []);
 
-    return <StyledVideo playsInline autoPlay ref={ref} />;
+    return props.isHost ? (
+        <HostStyledVideo playsInline autoPlay ref={ref} />
+    ) : (
+        <StyledVideo playsInline autoPlay ref={ref} />
+    );
 };
 
 const videoConstraints = {
@@ -58,7 +69,7 @@ const Room = (props) => {
                         peerID: userID,
                         peer
                     });
-                    peers.push(peer);
+                    peers.push({ peerID: userID, peer });
                 });
                 setPeers(peers);
             });
@@ -70,14 +81,32 @@ const Room = (props) => {
                     peer
                 });
 
-                setPeers((users) => [...users, peer]);
+                const peerObj = {
+                    peer,
+                    peerID: payload.callerID
+                };
+
+                setPeers((users) => [...users, peerObj]);
             });
 
             socketRef.current.on('receiving returned signal', (payload) => {
                 const item = peersRef.current.find((p) => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
+
+            socketRef.current.on('user left', (id) => {
+                const peerObj = peersRef.current.find((p) => p.peerID === id);
+                if (peerObj) {
+                    peerObj.peer.destroy();
+                }
+                const peers = peersRef.current.filter((p) => p.peerID !== id);
+                peersRef.current = peers;
+                setPeers(peers);
+            });
         });
+        return () => {
+            socketRef.current.disconnect();
+        };
     }, []);
 
     function createPeer(userToSignal, callerID, stream) {
@@ -113,8 +142,8 @@ const Room = (props) => {
     return (
         <Container>
             <StyledVideo muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer, index) => {
-                return <Video key={index} peer={peer} />;
+            {peers.map((peer) => {
+                return <Video key={peer.peerID} peer={peer.peer} />;
             })}
         </Container>
     );
