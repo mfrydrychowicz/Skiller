@@ -2,11 +2,19 @@ import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
-import VideoActions from '../components/VideoActions/VideoActions';
 
 import { isTemplateTail } from 'typescript';
 import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button } from '@chakra-ui/react';
 import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
+import {
+    HandRightOutline,
+    HandRight,
+    MicOutline,
+    MicOffOutline,
+    VideocamOutline,
+    VideocamOffOutline,
+    LaptopOutline
+} from 'react-ionicons';
 
 import ChatBox from '../components/Chat/ChatBox';
 
@@ -48,6 +56,23 @@ const Room = (props) => {
     const isHost = props.location?.state?.isHost ?? false;
     // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
     // console.log(props.match.params);
+
+    const [isMuted, setIsMuted] = useState(false);
+    const [isCameraOn, setIsCameraOn] = useState(false);
+    const [isHandRaised, setIsHandRaised] = useState(false);
+
+    const handleMute = () => {
+        setIsMuted((isMuted) => !isMuted);
+    };
+
+    const handleCamera = () => {
+        setIsCameraOn((isCameraOn) => !isCameraOn);
+    };
+
+    const handleHandRaise = () => {
+        setIsHandRaised((isHandRaised) => !isHandRaised);
+    };
+
     useEffect(() => {
         socketRef.current = io('/');
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
@@ -184,7 +209,22 @@ const Room = (props) => {
                 })}
 
                 <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
-                    <VideoActions clickScreenSharing={clickScreenSharing}></VideoActions>
+                    <Flex
+                        flexDirection="row"
+                        bgColor="brand.orange"
+                        display="inline-flex"
+                        alignItems="center"
+                        paddingX={4}
+                        paddingY={4}
+                        rounded="md"
+                    >
+                        <HStack spacing="2em">
+                            <Icon as={isCameraOn ? VideocamOffOutline : VideocamOutline} onClick={handleCamera} />
+                            <Icon as={isMuted ? MicOffOutline : MicOutline} onClick={handleMute} />
+                            <Icon as={isHandRaised ? HandRight : HandRightOutline} onClick={handleHandRaise} />
+                            <Icon as={LaptopOutline} onClick={clickScreenSharing} />
+                        </HStack>
+                    </Flex>
                 </Box>
             </Grid>
             <StyledChat>
