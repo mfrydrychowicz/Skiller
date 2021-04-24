@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 import { IQuizQuestion } from '../interfaces/QuizQuestion.interface';
 
-export const addNewQuiz = async (userQuestion: IQuizQuestion) => {
+export const addNewQuiz = async (userQuestion: IQuizQuestion, roomId: string) => {
     try {
         const question = await firebase
             .firestore()
             .collection('QuizQuestions')
-            .add({ ...userQuestion, expirationTime: Date.now() + 60 * 1000 });
+            .add({ ...userQuestion, roomId, expirationTime: Date.now() + 60 * 1000 });
         const questionFromDb = await await question.get();
         return questionFromDb;
     } catch (e) {

@@ -344,7 +344,7 @@ const Room = (props) => {
             <StyledChat>
                 <ChatBox roomID={roomID} />
             </StyledChat>
-            {/* <QuizController roomId={roomID} /> */}
+            <QuizController roomId={roomID} />
         </Flex>
     );
 };
