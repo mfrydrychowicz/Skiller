@@ -4,6 +4,8 @@ import Peer from 'simple-peer';
 import styled from 'styled-components';
 import useChat from '../hooks/useChat';
 import { isTemplateTail } from 'typescript';
+import { Icon, Box, IconButton } from '@chakra-ui/react';
+import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
 
 const Container = styled.div`
     padding: 20px;
@@ -15,8 +17,9 @@ const Container = styled.div`
 `;
 
 const StyledVideo = styled.video`
-    height: 40%;
-    width: 50%;
+    height: 100%;
+    width: 60%;
+    background: black;
 `;
 
 const HostStyledVideo = styled.video`
@@ -140,12 +143,17 @@ const Room = (props) => {
     }
 
     return (
-        <Container>
+        <Box>
             <StyledVideo muted ref={userVideo} autoPlay playsInline />
             {peers.map((peer) => {
                 return <Video key={peer.peerID} peer={peer.peer} />;
             })}
-        </Container>
+            <Box d="flex" justifyContent="center" w="60%" bgColor="blackAlpha.500">
+                <IconButton m={2} colorScheme="orange" aria-label="Screenshot" icon={<Icon as={FaCamera} />} />
+                <IconButton m={2} colorScheme="orange" aria-label="Microphone" icon={<Icon as={FaMicrophoneSlash} />} />
+                <IconButton m={2} colorScheme="orange" aria-label="HandUp" icon={<Icon as={FaHandPaper} />} />
+            </Box>
+        </Box>
     );
 };
 
