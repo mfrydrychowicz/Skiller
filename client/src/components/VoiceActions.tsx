@@ -38,7 +38,21 @@ export const VoiceActions = (props) => {
           toggleColorMode();
         }
       },
-    }
+    },
+    {
+      command: ['show chatroom', 'open chatroom'],
+      callback: () => {
+        console.log('opening chatroom site')
+        window.location.href = '/'
+      },
+    },
+    {
+      command: ['show ranking', 'open ranking', 'show hall of fame', 'open hall of fame'],
+      callback: () => {
+        console.log('opening chatroom site')
+        window.location.href = '/halloffame'
+      },
+    },
   ]
 
   const { transcript, resetTranscript } = useSpeechRecognition({ commands });

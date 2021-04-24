@@ -2,6 +2,7 @@ import { Image, Flex, Heading, Text, Spacer, Icon, HStack, useColorMode, Button 
 import React, { useState } from 'react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { IoTrophyOutline } from 'react-icons/io5';
+import { FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 import { useHistory } from 'react-router-dom';
@@ -9,6 +10,7 @@ import firebase from 'firebase';
 import { newUser } from '../../db/newUser';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Logout from '../Logout/Logout';
+import SpeechRecognition from 'react-speech-recognition';
 
 // Use this https://codepen.io/sosuke/pen/Pjoqqp to get filter for desired icon color
 
@@ -51,6 +53,22 @@ export default function TopNavBar() {
             <SunIcon color="brand.orange" onClick={changeColorMode} h={6} w={6} />
         );
 
+    const [isListening, setIsListening] = useState(false);
+    const turnOnListening = () => {
+        console.log('turning on listening');
+        SpeechRecognition.startListening();
+        setIsListening(true);
+    }
+    const turnOffListening = () => {
+        console.log('turning off listening');
+        SpeechRecognition.stopListening();
+        setIsListening(false);
+    }
+
+    const microphoneIcon = isListening ? 
+    <Icon as={FaMicrophoneSlash} color="brand.orange" onClick={turnOnListening} /> :
+    <Icon as={FaMicrophone} color="brand.orange" onClick={turnOffListening} />;
+
     return (
         <>
             <Flex
@@ -84,6 +102,7 @@ export default function TopNavBar() {
                             {user.displayName}
                         </Text>
                         {colorModeIcon}
+                        {microphoneIcon}
                         <Logout />
                     </HStack>
                 ) : (

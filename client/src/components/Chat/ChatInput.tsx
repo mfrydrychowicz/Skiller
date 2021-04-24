@@ -1,4 +1,4 @@
-import { Container, Box, HStack, IconButton, Icon } from '@chakra-ui/react';
+import { HStack, IconButton, Icon } from '@chakra-ui/react';
 import { Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
 import { IoIosSend } from 'react-icons/io';

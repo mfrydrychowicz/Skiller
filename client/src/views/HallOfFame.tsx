@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import {
   Modal,
   ModalOverlay,
@@ -93,7 +92,7 @@ export const HallOfFame = () => {
     setUsers(sortedUsersByPoints);
   }
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { onClose } = useDisclosure()
 
   const [isSortedByPoints, setIsSortedByPoints] = useState(true);
 

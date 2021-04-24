@@ -19,14 +19,13 @@ import {
     useDisclosure,
     useColorMode
 } from '@chakra-ui/react';
-import { css } from '@emotion/react';
 import firebase from 'firebase';
 import { useState, useRef } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link, useHistory } from 'react-router-dom';
 import { newRoom } from '../../db/newRoom';
 import RoomCard from './RoomCard/RoomCard';
-import { AddIcon, CloseIcon, CheckIcon, SearchIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon, SearchIcon } from '@chakra-ui/icons';
 
 const RoomsList = () => {
     const [roomName, setRoomName] = useState('');

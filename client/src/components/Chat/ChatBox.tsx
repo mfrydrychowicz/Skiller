@@ -2,7 +2,6 @@ import { Container, Box, VStack } from '@chakra-ui/react';
 import { Spinner } from '@chakra-ui/react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
-import { useState } from 'react';
 import useChat from '../../hooks/useChat';
 
 const ChatBox = ({ roomID }) => {

@@ -3,8 +3,7 @@ import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
 
-import { isTemplateTail } from 'typescript';
-import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button, useColorMode } from '@chakra-ui/react';
+import { Icon, Box, HStack, Flex, Grid, GridItem, useColorMode } from '@chakra-ui/react';
 import { FiCamera, FiCameraOff, FiMic, FiMicOff, FiLogOut } from 'react-icons/fi';
 import { FaStar } from 'react-icons/fa';
 import { IoHandRight, IoHandRightOutline } from 'react-icons/io5';

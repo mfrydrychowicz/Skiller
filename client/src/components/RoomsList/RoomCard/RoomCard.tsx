@@ -1,7 +1,5 @@
-import { Box, Flex, Heading, Button, Text, Avatar } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Flex, Button, Text, Avatar } from '@chakra-ui/react';
 import styles from './RoomCard.style';
-import cardStyle from './RoomCard.style';
 import { AddIcon } from '@chakra-ui/icons';
 
 type props = {

@@ -1,4 +1,4 @@
-import { Container, Box, HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import { Text, Avatar } from '@chakra-ui/react';
 const ChatMessage = ({ author, message }) => {
     return (

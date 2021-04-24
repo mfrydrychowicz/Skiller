@@ -1,15 +1,12 @@
 import axios from 'axios';
 import {
-    Button,
-    ButtonGroup,
-    Heading,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalBody,
-    useDisclosure,
-    IconButton
-} from '@chakra-ui/react';
+  Button, ButtonGroup, Heading,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  useDisclosure,
+} from "@chakra-ui/react"
 
 import { VoiceActions } from './VoiceActions';
 
