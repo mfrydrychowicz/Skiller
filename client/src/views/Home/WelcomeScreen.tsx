@@ -53,7 +53,7 @@ export const WelcomeScreen = (): ReactElement => {
         }
     };
     return (
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" height="100%">
             <SimpleGrid columns={3} spacingY="40px" marginTop="34px">
                 <Box d="flex" justifyContent="center" alignItems="center" w="100%" h="100%">
                     <List spacing={12}>

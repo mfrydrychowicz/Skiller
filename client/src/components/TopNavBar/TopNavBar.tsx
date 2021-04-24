@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import { newUser } from '../../db/newUser';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Logout from '../Logout/Logout';
 
 // Use this https://codepen.io/sosuke/pen/Pjoqqp to get filter for desired icon color
 
@@ -85,6 +86,7 @@ export default function TopNavBar() {
                             {user.displayName}
                         </Text>
                         {colorModeIcon}
+                        <Logout />
                     </HStack>
                 ) : (
                     <Button colorScheme="orange" variant="solid" size="md" onClick={login}>
