@@ -27,11 +27,11 @@ const RoomCard = ({ id, name }: props) => {
         >
             <Avatar size="2xl" name="Ryan Florence" src="https://bit.ly/ryan-florence" />
             <Box d="flex" flexDirection="column" m={1} w="50%">
-                <Box>
+                <Box bgColor="transparent">
                     <Text size="xl" color="gray.400" textTransform="uppercase" mb={0} textAlign="center">
                         Room topic
                     </Text>
-                    <Text fontSize={24} sx={styles} color="gray.400">
+                    <Text fontSize={24} sx={styles} color="gray.400" bgColor="none">
                         {name}
                     </Text>
                 </Box>
