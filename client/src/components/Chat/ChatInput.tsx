@@ -7,7 +7,7 @@ const ChatInput = ({ onSubmit }) => {
     const [value, setValue] = useState('');
     const handleChange = (event) => setValue(event.target.value);
     const sendMessage = () => {
-        onSubmit(value);
+        if (value.trim().length > 0) onSubmit(value);
         setValue('');
     };
     return (
@@ -18,13 +18,29 @@ const ChatInput = ({ onSubmit }) => {
                 size="md"
                 variant="outline"
                 placeholder="Type sth here"
-                bg="whiteAlpha"
                 rows={1}
                 max-rows={20}
                 minHeight="2.5em"
                 height="2.5em"
+                bgColor="brand.middlegrey"
+                borderColor="brand.middlegrey"
+                color="brand.lightgrey"
+                focusBorderColor="brand.orange"
             />
-            <IconButton aria-label="Send" onClick={sendMessage} icon={<Icon as={Send} color="brand.orange" />} />
+            <IconButton
+                aria-label="Send"
+                onClick={sendMessage}
+                backgroundColor="transparent"
+                borderColor="brand.orange"
+                _hover={{ bg: 'brand.middlegrey' }}
+                variant="outline"
+                icon={
+                    <Icon
+                        as={Send}
+                        filter="invert(49%) sepia(69%) saturate(3966%) hue-rotate(359deg) brightness(103%) contrast(110%);"
+                    />
+                }
+            />
         </HStack>
     );
 };
