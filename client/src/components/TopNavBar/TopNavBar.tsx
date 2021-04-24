@@ -1,12 +1,15 @@
-import { Image, Flex, Heading, Text, Spacer, Icon, HStack, Button } from '@chakra-ui/react';
+import { Image, Flex, Heading, Text, Spacer, Icon, HStack, useColorMode, Button } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { TrophyOutline } from 'react-ionicons';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 import { useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import { newUser } from '../../db/newUser';
 import { useAuthState } from 'react-firebase-hooks/auth';
+
+// Use this https://codepen.io/sosuke/pen/Pjoqqp to get filter for desired icon color
 
 export default function TopNavBar() {
     const [points, setPoints] = useState(0);
@@ -30,34 +33,65 @@ export default function TopNavBar() {
     };
 
     const logout = () => {
-        firebase.auth().signOut()
-    }
+        firebase.auth().signOut();
+    };
+    const { colorMode, toggleColorMode } = useColorMode();
+
+    const changeColorMode = (newMode) => {
+        if (colorMode !== newMode) {
+            toggleColorMode();
+        }
+    };
+
+    const colorModeIcon =
+        colorMode === 'light' ? (
+            <MoonIcon color="brand.orange" onClick={changeColorMode} />
+        ) : (
+            <SunIcon color="brand.orange" onClick={changeColorMode} />
+        );
+
     return (
-        <Flex bgColor="brand.darkgrey" paddingX="3em" height="4em" alignItems="center">
-            <Link to="/">
-                <HStack spacing="1em">
-                    <Image src="./logo.svg" alt="Skiller logo" height="3em" color="brand.orange" />
-                    <Heading size="md" color="brand.orange">
-                        SKILLER
-                    </Heading>
-                </HStack>
-            </Link>
-            <Spacer />
-            {user?.uid ? (
-                <HStack spacing="2em">
-                    <Icon as={TrophyOutline} fill="brand.orange" />
-                    <Text mr="2" color="brand.orange">
-                        {points} pt
-                    </Text>
-                    <Text mr="2" color="brand.orange">
-                        {user.displayName}
-                    </Text>                    
-                </HStack>
-            ) : (
-                <Button colorScheme="orange" variant="solid" size="md" onClick={login}>
-                    Register/ Login
-                </Button>
-            )}
-        </Flex>
+        <>
+            <Flex
+                bgColor={colorMode === 'light' ? 'brand.darkgrey' : 'brand.lightgrey'}
+                paddingX="3em"
+                height="4em"
+                alignItems="center"
+            >
+                <Link to="/">
+                    <HStack spacing="1em">
+                        <Image
+                            src="./logo.svg"
+                            alt="Skiller logo"
+                            height="3em"
+                            filter="invert(49%) sepia(69%) saturate(3966%) hue-rotate(359deg) brightness(103%) contrast(110%);"
+                        />
+                        <Heading size="md" color="brand.orange">
+                            SKILLER
+                        </Heading>
+                    </HStack>
+                </Link>
+                <Spacer />
+                {user?.uid ? (
+                    <HStack spacing="2em">
+                        <Icon
+                            as={TrophyOutline}
+                            filter="invert(49%) sepia(69%) saturate(3966%) hue-rotate(359deg) brightness(103%) contrast(110%);"
+                        />
+                        <Text mr="2" color="brand.orange">
+                            {points} pt.
+                        </Text>
+                        <Text mr="2" color="brand.orange">
+                            {user.displayName}
+                        </Text>
+                        {colorModeIcon}
+                    </HStack>
+                ) : (
+                    <Button colorScheme="orange" variant="solid" size="md" onClick={login}>
+                        Register/ Login
+                    </Button>
+                )}
+            </Flex>
+        </>
     );
 }

@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import {
     Box,
-    Button, Center, FormControl, FormLabel, Input,
+    Button, Center, FormControl, FormLabel, Icon, Input,
     Modal,
     ModalCloseButton,
     ModalContent,
@@ -11,6 +11,7 @@ import {
     useDisclosure
 } from '@chakra-ui/react';
 
+import {AddIcon} from '@chakra-ui/icons'
 type props = {
     isOpen: boolean,
     onClose: () => void
@@ -66,7 +67,14 @@ const NewQuestionModal = ({ isOpen, onClose }: props) => {
                             <FormLabel> Not Correct Answer</FormLabel>
                             <Input isRequired/>
                         </FormControl>
-                        <Button type='submit' colorScheme={'green'} m='25px 0 25px 80%'> Save</Button>
+                        <Button
+                            type='submit'
+                            colorScheme={'green'}
+                            m='25px 0 25px 74%'
+                            isInline
+                            justyify='baseline'
+                            leftIcon={<AddIcon />}
+                        > Save</Button>
                     </form>
                 </Box>
             </ModalContent>
