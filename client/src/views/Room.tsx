@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { isTemplateTail } from 'typescript';
 import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button, useColorMode } from '@chakra-ui/react';
 import { FiCamera, FiCameraOff, FiMic, FiMicOff, FiLogOut } from 'react-icons/fi';
+import { FaStar } from 'react-icons/fa';
 import { IoHandRight, IoHandRightOutline } from 'react-icons/io5';
 import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 
@@ -13,6 +14,8 @@ import ChatBox from '../components/Chat/ChatBox';
 import { useDocumentDataOnce, useDocumentOnce } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase';
 import { useHistory } from 'react-router-dom';
+import QuizController from '../components/QuizController/QuizController';
+import NewQuestion from '../components/new-question/NewQuestion';
 
 const StyledVideo = styled.video`
     background: black;
@@ -297,7 +300,7 @@ const Room = (props) => {
                         paddingY={3}
                         rounded="md"
                     >
-                        <HStack spacing="2em">
+                        <HStack spacing="2em" _hover={{ cursor: 'pointer' }}>
                             {/* <div onClick={toggleCameraAudio} data-switch="video">
                                 {'camera'}
                             </div>
@@ -332,6 +335,7 @@ const Room = (props) => {
                                 w={6}
                                 color="brand.orange"
                             />
+                            <NewQuestion roomId={roomID} />
                             <Icon as={FiLogOut} onClick={goToBack} h={6} w={6} color="brand.orange" />
                         </HStack>
                     </Flex>
@@ -340,6 +344,7 @@ const Room = (props) => {
             <StyledChat>
                 <ChatBox roomID={roomID} />
             </StyledChat>
+            {/* <QuizController roomId={roomID} /> */}
         </Flex>
     );
 };
