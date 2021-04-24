@@ -305,8 +305,7 @@ const Room = (props) => {
                             <HStack spacing="2em" _hover={{ cursor: 'pointer' }}>
                                 <div onClick={toggleCameraAudio} data-switch="video">
                                     <Icon
-                                        onClick={toggleCameraAudio}
-                                        onClick={handleCamera}
+                                        onClick={toggleCameraAudio && handleCamera}
                                         data-switch="video"
                                         as={isCameraOn ? FiCameraOff : FiCamera}
                                         h={6}
@@ -316,10 +315,9 @@ const Room = (props) => {
                                 </div>
                                 <div onClick={toggleCameraAudio} data-switch="audio">
                                     <Icon
-                                        onClick={toggleCameraAudio}
+                                        onClick={toggleCameraAudio && handleMute}
                                         data-switch="audio"
                                         as={isMuted ? FiMicOff : FiMic}
-                                        onClick={handleMute}
                                         h={6}
                                         w={6}
                                         color="brand.orange"
