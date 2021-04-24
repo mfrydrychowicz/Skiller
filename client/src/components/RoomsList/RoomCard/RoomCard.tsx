@@ -22,7 +22,7 @@ const RoomCard = ({ id, name, user }: props) => {
             justify="center"
             flexDirection="row"
             align="center"
-            bg={colorMode === 'light' ? 'brand.purewhite' : 'brand.middlegrey'}
+            bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
             shadow="md"
             transform="scale(0.85)"
             transition="0.3s linear"
@@ -41,7 +41,7 @@ const RoomCard = ({ id, name, user }: props) => {
                 <Button
                     leftIcon={<AddIcon />}
                     sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
-                    colorScheme="orange"
+                    color="brand.orange"
                     marginTop="2rem"
                     w="50%"
                     alignSelf="flex-end"

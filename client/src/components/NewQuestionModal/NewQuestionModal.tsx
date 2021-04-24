@@ -82,7 +82,7 @@ const NewQuestionModal = ({ isOpen, onClose }: props) => {
                         </FormControl>
                         <Button
                             type="submit"
-                            colorScheme={'green'}
+                            color="brand.orange"
                             m="25px 0 25px 74%"
                             isinline
                             justyify="baseline"

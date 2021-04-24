@@ -75,7 +75,7 @@ const RoomsList = () => {
                     leftIcon={<AddIcon />}
                     sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
                     onClick={onOpen}
-                    colorScheme="orange"
+                    color="brand.orange"
                 >
                     {' '}
                     Add New Room
@@ -86,13 +86,7 @@ const RoomsList = () => {
                 Active rooms
             </Text>
 
-            <Flex
-                wrap="wrap"
-                maxWidth="100%"
-                minHeight="86vh"
-                justify="center"
-                bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
-            >
+            <Flex wrap="wrap" maxWidth="100%" minHeight="86vh" justify="center">
                 {rooms.docs.map((room) => (
                     <Box m="20px" key={room.id} w="30%">
                         <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
@@ -119,7 +113,7 @@ const RoomsList = () => {
                                 <Button
                                     leftIcon={<CheckIcon />}
                                     variant="solid"
-                                    colorScheme="blue"
+                                    color="brand.orange"
                                     onClick={handleRoomNameSubmit}
                                     align="baseline"
                                 >

@@ -90,12 +90,20 @@ export default function TopNavBar() {
                         </Text>
                         {colorModeIcon}
                         <Logout />
-                        <Button colorScheme="orange" variant="solid" size="md" onClick={LikeMe}>
+                        <Button
+                            color="brand.orange"
+                            variant="solid"
+                            size="md"
+                            onClick={LikeMe}
+                            border="1px solid black"
+                            borderColor="brand.orange"
+                            background="transparent"
+                        >
                             SelfLike
                         </Button>
                     </HStack>
                 ) : (
-                    <Button colorScheme="orange" variant="solid" size="md" onClick={login}>
+                    <Button color="brand.orange" variant="solid" size="md" onClick={login}>
                         Register/ Login
                     </Button>
                 )}
