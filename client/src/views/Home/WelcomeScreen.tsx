@@ -117,9 +117,9 @@ export const WelcomeScreen = (): ReactElement => {
             <Box d="flex" justifyContent="center" alignItems="center">
                 <MotionButton
                     width="30%"
-                    color="brand.orange"
+                    color="brand.white"
                     size="lg"
-                    col="brand.white"
+                    colorScheme="orange"
                     variants={buttonVariants}
                     whileHover="hover"
                     onClick={login}
