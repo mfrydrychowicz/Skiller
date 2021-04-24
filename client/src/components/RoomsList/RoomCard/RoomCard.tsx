@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Button, Text, Avatar } from '@chakra-ui/react';
+import { Box, Flex, Heading, Button, Text, Avatar, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import styles from './RoomCard.style';
 import cardStyle from './RoomCard.style';
@@ -10,6 +10,8 @@ type props = {
 };
 
 const RoomCard = ({ id, name }: props) => {
+    const { colorMode } = useColorMode();
+
     return (
         <Flex
             rounded="20px"
@@ -19,7 +21,7 @@ const RoomCard = ({ id, name }: props) => {
             justify="center"
             flexDirection="row"
             align="center"
-            bg="white"
+            bg={colorMode === 'light' ? 'brand.purewhite' : 'brand.middlegrey'}
             shadow="sm"
             transform="scale(0.85)"
             transition="0.3s linear"
