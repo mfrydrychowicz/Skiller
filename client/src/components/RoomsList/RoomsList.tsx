@@ -3,6 +3,7 @@ import {
     Button,
     ButtonGroup,
     Drawer,
+    Icon,
     DrawerBody,
     DrawerCloseButton,
     DrawerContent,
@@ -11,6 +12,9 @@ import {
     DrawerOverlay,
     Flex,
     Input,
+    InputGroup,
+    InputLeftElement,
+    Text,
     Spinner,
     useDisclosure,
     useColorMode
@@ -22,7 +26,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link, useHistory } from 'react-router-dom';
 import { newRoom } from '../../db/newRoom';
 import RoomCard from './RoomCard/RoomCard';
-import { AddIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons';
+import { AddIcon, CloseIcon, CheckIcon, SearchIcon } from '@chakra-ui/icons';
 
 const RoomsList = () => {
     const [roomName, setRoomName] = useState('');
@@ -51,10 +55,32 @@ const RoomsList = () => {
 
     return (
         <>
-            <Flex wrap="wrap" maxWidth="100%" justify="center"
-                bg={colorMode === "light" ? "brand.middlegrey" : "brand.white"}>
+            <Box d="flex" flexDirection="row" justifyContent="space-around" m={2}>
+                <InputGroup w="30%">
+                    <InputLeftElement pointerEvents="none" children={<Icon as={SearchIcon} />} />
+                    <Input type="room" placeholder="Find room" />
+                </InputGroup>
+                <Button
+                    leftIcon={<AddIcon />}
+                    sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
+                    onClick={onOpen}
+                    colorScheme="orange"
+                >
+                    {' '}
+                    Add New Room
+                </Button>
+            </Box>
+            <Flex
+                wrap="wrap"
+                maxWidth="100%"
+                justify="center"
+                bg={colorMode === 'light' ? 'brand.lightgray' : 'brand.white'}
+            >
+                <Text w="100%" pl={16} fontWeight="bold">
+                    Active rooms
+                </Text>
                 {rooms.docs.map((room) => (
-                    <Box m="50px" key={room.id}>
+                    <Box m="20px" key={room.id} w="30%">
                         <Link to={`/room/${room.id}`}>
                             <RoomCard id={room.id} name={room.data().name} />
                         </Link>
@@ -63,8 +89,9 @@ const RoomsList = () => {
             </Flex>
             <Button
                 leftIcon={<AddIcon />}
-                sx={{ position: 'absolute', bottom: '25px', right: '35px', zIndex: '10' }}
+                sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
                 onClick={onOpen}
+                colorScheme="orange"
             >
                 {' '}
                 Add New Room
