@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { isTemplateTail } from 'typescript';
 import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button, useColorMode } from '@chakra-ui/react';
-import { FiCamera, FiCameraOff, FiMic, FiMicOff } from 'react-icons/fi';
+import { FiCamera, FiCameraOff, FiMic, FiMicOff, FiLogOut } from 'react-icons/fi';
 import { IoHandRight, IoHandRightOutline } from 'react-icons/io5';
 import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 
@@ -332,7 +332,7 @@ const Room = (props) => {
                                 w={6}
                                 color="brand.orange"
                             />
-                            <div onClick={goToBack}>Leave room</div>
+                            <Icon as={FiLogOut} onClick={goToBack} h={6} w={6} color="brand.orange" />
                         </HStack>
                     </Flex>
                 </Box>
