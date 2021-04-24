@@ -34,7 +34,7 @@ const RoomCard = ({ id, name, user }: props) => {
                     <Text size="xl" color="gray.400" textTransform="uppercase" mb={0} textAlign="center">
                         Room topic
                     </Text>
-                    <Text fontSize={24} sx={styles} color="gray.700" bgColor="none">
+                    <Text fontSize={24} sx={styles} bgColor="none">
                         {name}
                     </Text>
                 </Box>
