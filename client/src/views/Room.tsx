@@ -2,28 +2,32 @@ import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
+import VideoActions from '../components/VideoActions/VideoActions';
 
 import { isTemplateTail } from 'typescript';
-import { Icon, Box, IconButton, HStack, Flex } from '@chakra-ui/react';
+import { Icon, Box, IconButton, HStack, Flex, Grid } from '@chakra-ui/react';
 import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
 
 import ChatBox from '../components/Chat/ChatBox';
 
 const StyledVideo = styled.video`
     background: black;
-    height: 80%;
-    width: 60%;
+    height: 100%;
+    width: 100%;
+    position: relative;
 `;
 
 const StyledChat = styled.div`
-    height: 80%;
-    width: 40%;
+    height: 100%;
+    width: 30%;
+    borderradius: 10px;
 `;
 
 const HostStyledVideo = styled.video`
     height: 80%;
     width: 60%;
     margin: 0 auto;
+    position: absolute;
 `;
 
 const Video = (props) => {
@@ -141,27 +145,20 @@ const Room = (props) => {
     }
 
     return (
-        <>
-            <Box>
-                <StyledVideo muted ref={userVideo} autoPlay playsInline />
+        <Flex direction="row" m={3}>
+            <Box w="70%">
+                <StyledVideo muted ref={userVideo} autoPlay playsInline h="700" borderRadius={2} />
                 {peers.map((peer) => {
                     return <Video key={peer.peerID} peer={peer.peer} />;
                 })}
-                <Box d="flex" justifyContent="center" w="60%" bgColor="blackAlpha.500">
-                    <IconButton m={2} colorScheme="orange" aria-label="Screenshot" icon={<Icon as={FaCamera} />} />
-                    <IconButton
-                        m={2}
-                        colorScheme="orange"
-                        aria-label="Microphone"
-                        icon={<Icon as={FaMicrophoneSlash} />}
-                    />
-                    <IconButton m={2} colorScheme="orange" aria-label="HandUp" icon={<Icon as={FaHandPaper} />} />
+                <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
+                    <VideoActions></VideoActions>
                 </Box>
             </Box>
             <StyledChat>
                 <ChatBox roomID={roomID} />
             </StyledChat>
-        </>
+        </Flex>
     );
 };
 
