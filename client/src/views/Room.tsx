@@ -10,9 +10,9 @@ import { IoHandRight, IoHandRightOutline } from 'react-icons/io5';
 import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 
 import ChatBox from '../components/Chat/ChatBox';
-import { saveRoomInfo } from '../db/saveRoomInfo';
 import { useDocumentDataOnce, useDocumentOnce } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase';
+import { useHistory } from 'react-router-dom';
 
 const StyledVideo = styled.video`
     background: black;
@@ -24,7 +24,7 @@ const StyledVideo = styled.video`
 const StyledChat = styled.div`
     height: 100%;
     width: 30%;
-    borderradius: 10px;
+    border-radius: 10px;
 `;
 
 StyledChat.defaultProps = {
@@ -45,6 +45,7 @@ const Video = (props) => {
 
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
+    const [isHost, setIsHost] = useState(props.location?.state?.isHost ?? false);
     const socketRef = useRef() as MutableRefObject<any>;
     const userVideo = useRef() as MutableRefObject<any>;
     const peersRef = useRef([]) as MutableRefObject<any>;
@@ -56,15 +57,14 @@ const Room = (props) => {
 
     const { colorMode } = useColorMode();
 
-    console.log('🚀 ~ file: Room.tsx ~ line 51 ~ Room ~ doc', doc);
-    const [userVideoAudio, setUserVideoAudio] = useState({
-        localUser: { video: true, audio: true }
-    });
-
     const isHost = props.location?.state?.isHost ?? false;
 
     // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
     // console.log(props.match.params);
+    const history = useHistory();
+    // const [userVideoAudio, setUserVideoAudio] = useState({
+    //     localUser: { video: true, audio: true }
+    // });
 
     const [isMuted, setIsMuted] = useState(false);
     const [isCameraOn, setIsCameraOn] = useState(false);
@@ -87,14 +87,14 @@ const Room = (props) => {
         socketRef.current = io('/');
 
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-            userVideo.current.srcObject = stream;
-            userStream.current = stream;
-            socketRef.current.emit('join room', roomID);
-            socketRef.current.on('all users', (users) => {
-                if (isHost) {
-                    console.log(socketRef.current.id);
-                    saveRoomInfo(roomID, socketRef.current.id);
-                }
+            if (isHost) {
+                userVideo.current.srcObject = stream;
+                userStream.current = stream;
+            }
+            socketRef.current.emit('join room', roomID, isHost);
+            socketRef.current.on('all users', (users, youAreTheHost) => {
+                console.log('🚀 ~ file: Room.tsx ~ line 84 ~ socketRef.current.on ~ youAreTheHost', youAreTheHost);
+                console.log('🚀 ~ file: Room.tsx ~ line 86 ~ socketRef.current.on ~ users', users);
                 const peers = [];
                 users.forEach((userID, info) => {
                     let { video, audio } = info;
@@ -103,14 +103,19 @@ const Room = (props) => {
                         peerID: userID,
                         peer
                     });
+
                     peers.push({ peerID: userID, peer });
-                    setUserVideoAudio((preList) => {
-                        return {
-                            ...preList,
-                            [peer.userName]: { video, audio }
-                        };
-                    });
+                    // setUserVideoAudio((preList) => {
+                    //     return {
+                    //         ...preList,
+                    //         [peer.userName]: { video, audio }
+                    //     };
+                    // });
                 });
+                if (youAreTheHost) {
+                    history.replace(`/room/${roomID}/${Math.random()}`, { isHost: true });
+                }
+
                 setPeers(peers);
             });
 
@@ -192,36 +197,36 @@ const Room = (props) => {
         return peer;
     }
 
-    const toggleCameraAudio = (e) => {
-        const target = e.target.getAttribute('data-switch');
+    // const toggleCameraAudio = (e) => {
+    //     const target = e.target.getAttribute('data-switch');
 
-        console.log(target);
+    //     console.log(target);
 
-        setUserVideoAudio((preList) => {
-            let videoSwitch = preList['localUser'].video;
-            let audioSwitch = preList['localUser'].audio;
+    //     setUserVideoAudio((preList) => {
+    //         let videoSwitch = preList['localUser'].video;
+    //         let audioSwitch = preList['localUser'].audio;
 
-            if (target === 'video') {
-                const userVideoTrack = userVideo.current.srcObject.getVideoTracks()[0];
-                videoSwitch = !videoSwitch;
-                userVideoTrack.enabled = videoSwitch;
-            } else {
-                const userAudioTrack = userVideo.current.srcObject.getAudioTracks()[0];
-                audioSwitch = !audioSwitch;
+    //         if (target === 'video') {
+    //             const userVideoTrack = userVideo.current.srcObject.getVideoTracks()[0];
+    //             videoSwitch = !videoSwitch;
+    //             userVideoTrack.enabled = videoSwitch;
+    //         } else {
+    //             const userAudioTrack = userVideo.current.srcObject.getAudioTracks()[0];
+    //             audioSwitch = !audioSwitch;
 
-                if (userAudioTrack) {
-                    userAudioTrack.enabled = audioSwitch;
-                } else {
-                    userStream.current.getAudioTracks()[0].enabled = audioSwitch;
-                }
-            }
+    //             if (userAudioTrack) {
+    //                 userAudioTrack.enabled = audioSwitch;
+    //             } else {
+    //                 userStream.current.getAudioTracks()[0].enabled = audioSwitch;
+    //             }
+    //         }
 
-            return {
-                ...preList,
-                localUser: { video: videoSwitch, audio: audioSwitch }
-            };
-        });
-    };
+    //         return {
+    //             ...preList,
+    //             localUser: { video: videoSwitch, audio: audioSwitch }
+    //         };
+    //     });
+    // };
 
     const goToBack = (e) => {
         e.preventDefault();
@@ -270,17 +275,19 @@ const Room = (props) => {
     return (
         <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.white'}>
             <Grid h="100%" w="70%" templateRows="5fr 1fr" templateColumns="repeat(8, 1fr)">
-                <GridItem rowSpan={5} colSpan={8}>
-                    {/* {userVideoAudio['localUser'].video ? null :} */}
-                    <StyledVideo muted ref={userVideo} autoPlay playsInline borderRadius={2} />
-                </GridItem>
-                {peers.map((peer) => {
-                    return (
-                        <GridItem rowSpan={1} colSpan={1}>
-                            <Video key={peer.peerID} peer={peer.peer} />
-                        </GridItem>
-                    );
-                })}
+                {isHost ? (
+                    <GridItem rowSpan={5} colSpan={8}>
+                        <StyledVideo muted ref={userVideo} autoPlay playsInline borderRadius={2} />
+                    </GridItem>
+                ) : (
+                    peers.map((peer) => {
+                        return (
+                            <GridItem rowSpan={5} colSpan={8}>
+                                <Video key={peer.peerID} peer={peer.peer} />
+                            </GridItem>
+                        );
+                    })
+                )}
 
                 <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
                     <Flex

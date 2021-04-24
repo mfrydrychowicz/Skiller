@@ -50,6 +50,7 @@ const App = (): ReactElement => {
                                 <Route exact path="/start" component={WelcomeScreen} />
                                 <PrivateRoute exact path="/" component={Home} />
                                 <PrivateRoute exact path="/room/:roomId" component={Room} />
+                                <PrivateRoute exact path="/room/:roomId/:randomValue" component={Room} />
                                 <Route exact path="/halloffame" component={HallOfFame} />
                                 <Route exact path="/login" component={Login} />
                                 <Route exact path="/quiz" component={() => DisplayQuiz({ ...exampleQuestion })} />
