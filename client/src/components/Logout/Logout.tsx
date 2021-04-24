@@ -19,8 +19,12 @@ const Logout = () => {
             aria-label="Logout"
             onClick={() => onUserLogout()}
             variant="outline"
-            bgColor="whiteAlpha.100"
             icon={<Icon as={FiLogOut} color="brand.orange" />}
+            color="brand.orange"
+            size="md"
+            border="1px solid black"
+            borderColor="brand.orange"
+            background="transparent"
         >
             Logout
         </IconButton>

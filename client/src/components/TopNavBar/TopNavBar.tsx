@@ -99,7 +99,7 @@ export default function TopNavBar() {
                         <Logout />
                     </HStack>
                 ) : (
-                    <Button colorScheme="orange" variant="solid" size="md" onClick={login}>
+                    <Button color="brand.orange" variant="solid" size="md" onClick={login}>
                         Register/ Login
                     </Button>
                 )}

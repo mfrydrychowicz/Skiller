@@ -83,7 +83,7 @@ export const DisplayQuiz = ({ question, answers, correctAnswer }: QuizQuestion) 
                         {answers.map((answer, index) => (
                             <Button
                                 key={answer}
-                                colorScheme="purple"
+                                color="brand.orange"
                                 size="md"
                                 variant="outline"
                                 isFullWidth={true}

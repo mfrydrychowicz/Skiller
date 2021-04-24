@@ -62,36 +62,34 @@ const RoomsList = () => {
 
     return (
         <>
-            <Box d="flex" flexDirection="row" justifyContent="space-around" m={2}>
+            <Box d="flex" flexDirection="row" justifyContent="space-between" m={4}>
                 <InputGroup w="30%">
                     <InputLeftElement pointerEvents="none" children={<Icon as={SearchIcon} />} />
-                    <Input type="room" placeholder="Find room" />
+                    <Input
+                        type="room"
+                        placeholder="Find room"
+                        backgroundColor={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
+                    />
                 </InputGroup>
                 <Button
                     leftIcon={<AddIcon />}
                     sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
                     onClick={onOpen}
-                    colorScheme="orange"
+                    color="brand.orange"
                 >
                     {' '}
                     Add New Room
                 </Button>
             </Box>
-            <Flex
-                wrap="wrap"
-                maxWidth="100%"
-                minHeight='86vh'
-                justify="center"
-                bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
-            >
-                <Text w="100%" pl={16} fontWeight="bold" mt={5}>
-                    Active rooms
-                </Text>
+
+            <Text w="100%" fontWeight="bold" mt={5} textAlign="center" fontSize="2em" color="brand.orange">
+                Active rooms
+            </Text>
+
+            <Flex wrap="wrap" maxWidth="100%" minHeight="86vh" justify="center">
                 {rooms.docs.map((room) => (
                     <Box m="20px" key={room.id} w="30%">
-                        <Link to={`/room/${room.id}`}>
-                            <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
-                        </Link>
+                        <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
                     </Box>
                 ))}
             </Flex>
@@ -115,7 +113,7 @@ const RoomsList = () => {
                                 <Button
                                     leftIcon={<CheckIcon />}
                                     variant="solid"
-                                    colorScheme="blue"
+                                    color="brand.orange"
                                     onClick={handleRoomNameSubmit}
                                     align="baseline"
                                 >

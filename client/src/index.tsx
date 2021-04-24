@@ -8,7 +8,7 @@ const colors = {
     brand: {
         orange: '#FF6500',
         darkgrey: '#262626',
-        middlegrey: '#363636',
+        middlegrey: '#464646',
         lightgrey: '#eaeaea',
         white: '#FAFAFA',
         purewhite: '#ffffff'
@@ -18,7 +18,7 @@ const colors = {
 export const customTheme = extendTheme({
     colors,
     config: {
-        initialColorMode: 'dark',
+        initialColorMode: 'light',
         useSystemColorMode: false
     }
 });

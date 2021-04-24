@@ -67,22 +67,22 @@ const NewQuestionModal = ({ isOpen, onClose }: props) => {
                         </FormControl>
 
                         <FormControl id="notCorrectAnswer1" mb={5}>
-                            <FormLabel> Not Correct Answer</FormLabel>
+                            <FormLabel> Incorrect Answer</FormLabel>
                             <Input isRequired onChange={(e) => setNotCorrect1(e.target.value)} />
                         </FormControl>
 
                         <FormControl id="notCorrectAnswer2" mb={5}>
-                            <FormLabel> Not Correct Answer</FormLabel>
+                            <FormLabel> Incorrect Answer</FormLabel>
                             <Input isRequired onChange={(e) => setNotCorrect2(e.target.value)} />
                         </FormControl>
 
                         <FormControl id="notCorrectAnswer3" mb={5}>
-                            <FormLabel> Not Correct Answer</FormLabel>
+                            <FormLabel> Incorrect Answer</FormLabel>
                             <Input isRequired onChange={(e) => setNotCorrect3(e.target.value)} />
                         </FormControl>
                         <Button
                             type="submit"
-                            colorScheme={'green'}
+                            color="brand.orange"
                             m="25px 0 25px 74%"
                             isinline
                             justyify="baseline"

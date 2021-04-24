@@ -22,26 +22,26 @@ const RoomCard = ({ id, name, user }: props) => {
             justify="center"
             flexDirection="row"
             align="center"
-            bg={colorMode === 'light' ? 'brand.purewhite' : 'brand.middlegrey'}
-            shadow="sm"
+            bg={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
+            shadow="md"
             transform="scale(0.85)"
             transition="0.3s linear"
-            _hover={{ transform: 'scale(1)', fontWeight: 'bold' }}
+            _hover={{ transform: 'scale(0.9)' }}
         >
             <Avatar size="2xl" name="Ryan Florence" src={user?.photoURL ?? 'https://bit.ly/ryan-florence'} />
             <Box d="flex" flexDirection="column" m={1} w="50%">
                 <Box bgColor="transparent">
-                    <Text size="xl" color="gray.400" textTransform="uppercase" mb={0} textAlign="center">
+                    <Text size="xl" color="gray.400" textTransform="uppercase" mb={0} textAlign="center" fontSize="1em">
                         Room topic
                     </Text>
-                    <Text fontSize={24} sx={styles} color="gray.400" bgColor="none">
+                    <Text fontSize={24} sx={styles} bgColor="none">
                         {name}
                     </Text>
                 </Box>
                 <Button
                     leftIcon={<AddIcon />}
                     sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
-                    colorScheme="orange"
+                    color="brand.orange"
                     marginTop="2rem"
                     w="50%"
                     alignSelf="flex-end"
