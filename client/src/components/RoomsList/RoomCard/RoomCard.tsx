@@ -7,9 +7,10 @@ import { AddIcon } from '@chakra-ui/icons';
 type props = {
     id: string;
     name: string;
+    user: any;
 };
 
-const RoomCard = ({ id, name }: props) => {
+const RoomCard = ({ id, name, user }: props) => {
     const { colorMode } = useColorMode();
 
     return (
@@ -27,7 +28,7 @@ const RoomCard = ({ id, name }: props) => {
             transition="0.3s linear"
             _hover={{ transform: 'scale(1)', fontWeight: 'bold' }}
         >
-            <Avatar size="2xl" name="Ryan Florence" src="https://bit.ly/ryan-florence" />
+            <Avatar size="2xl" name="Ryan Florence" src={user?.photoURL ?? 'https://bit.ly/ryan-florence'} />
             <Box d="flex" flexDirection="column" m={1} w="50%">
                 <Box bgColor="transparent">
                     <Text size="xl" color="gray.400" textTransform="uppercase" mb={0} textAlign="center">
@@ -45,7 +46,6 @@ const RoomCard = ({ id, name }: props) => {
                     w="50%"
                     alignSelf="flex-end"
                 >
-                    {' '}
                     Join
                 </Button>
             </Box>
