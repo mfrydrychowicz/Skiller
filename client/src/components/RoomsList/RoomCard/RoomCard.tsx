@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './RoomCard.style';
 import cardStyle from './RoomCard.style';
 import { AddIcon } from '@chakra-ui/icons';
+import { useHistory } from 'react-router-dom';
 
 type props = {
     id: string;
@@ -12,6 +13,12 @@ type props = {
 
 const RoomCard = ({ id, name, user }: props) => {
     const { colorMode } = useColorMode();
+    const history = useHistory();
+
+    const routeChange = () => {
+        let path = `/room/${id}`;
+        history.push(path);
+    };
 
     return (
         <Flex
@@ -45,6 +52,7 @@ const RoomCard = ({ id, name, user }: props) => {
                     marginTop="2rem"
                     w="50%"
                     alignSelf="flex-end"
+                    onClick={routeChange}
                 >
                     Join
                 </Button>
