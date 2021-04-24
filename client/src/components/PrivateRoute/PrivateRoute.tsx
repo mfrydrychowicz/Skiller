@@ -6,8 +6,6 @@ import { Spinner } from '@chakra-ui/react';
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const [user, loading, error] = useAuthState(auth);
 
-    if (loading) return <Spinner />;
-
     if (error) {
         console.log(error);
         return <div>Erroor</div>;
