@@ -47,21 +47,32 @@ const users = {};
 const socketToRoom = {};
 
 io.on('connection', (socket) => {
-    socket.on('join room', (roomID) => {
-        if (users[roomID]) {
-            const length = users[roomID].length;
-            if (length === 4) {
-                socket.emit('room full');
-                return;
-            }
-            users[roomID].push(socket.id);
-        } else {
+    socket.on('join room', (roomID, isHost = false) => {
+        // if (users[roomID] && isHost) {
+        //     const length = users[roomID].length;
+        //     if (length === 4) {
+        //         socket.emit('room full');
+        //         return;
+        //     }
+        //     users[roomID].push(socket.id);
+        // } else {
+        //     users[roomID] = [socket.id];
+        // }
+        console.log('users[roomID]', users[roomID]);
+        let isOnlyChild = false;
+        if (isHost || users[roomID] === undefined || users[roomID].length === 0) {
             users[roomID] = [socket.id];
+            isOnlyChild = true;
         }
+        // if (users[roomID].length === 0) {
+        //     users[roomID] = [socket.id];
+        //     isOnlyChild = true;
+        // }
+
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter((id) => id !== socket.id);
 
-        socket.emit('all users', usersInThisRoom);
+        socket.emit('all users', usersInThisRoom, isOnlyChild);
     });
 
     socket.on('sending signal', (payload) => {

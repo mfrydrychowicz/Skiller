@@ -12,7 +12,6 @@ import NewQuestion from '../../components/new-question/NewQuestion';
 import { HallOfFame } from '../HallOfFame';
 import { DisplayQuiz } from '../../components/DisplayQuiz';
 
-
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
     brand: {
@@ -27,12 +26,11 @@ const colors = {
 const customTheme = extendTheme({ colors });
 
 const App = (): ReactElement => {
-
     const exampleQuestion = {
-        question: "pytanie?",
+        question: 'pytanie?',
         answers: ['odpowiedz 1', 'odpowiedz 2', 'odpowiedz 3', 'odpowiedz 4'],
         correctAnswer: 'odpowiedz 1'
-    }
+    };
 
     return (
         <div>
@@ -44,6 +42,7 @@ const App = (): ReactElement => {
                             <Box h="calc(100vh - 4rem)">
                                 <PrivateRoute exact path="/" component={Home} />
                                 <PrivateRoute exact path="/room/:roomId" component={Room} />
+                                <PrivateRoute exact path="/room/:roomId/:randomValue" component={Room} />
                                 <Route exact path="/halloffame" component={HallOfFame} />
                                 <Route exact path="/login" component={Login} />
                                 <Route exact path="/quiz" component={() => DisplayQuiz({ ...exampleQuestion })} />

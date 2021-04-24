@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
 
-import { isTemplateTail } from 'typescript';
 import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button } from '@chakra-ui/react';
 import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
 import {
@@ -17,9 +16,9 @@ import {
 } from 'react-ionicons';
 
 import ChatBox from '../components/Chat/ChatBox';
-import { saveRoomInfo } from '../db/saveRoomInfo';
 import { useDocumentDataOnce, useDocumentOnce } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase';
+import { useHistory } from 'react-router-dom';
 
 const StyledVideo = styled.video`
     background: black;
@@ -31,7 +30,7 @@ const StyledVideo = styled.video`
 const StyledChat = styled.div`
     height: 100%;
     width: 30%;
-    borderradius: 10px;
+    border-radius: 10px;
 `;
 
 const Video = (props) => {
@@ -48,6 +47,7 @@ const Video = (props) => {
 
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
+    const [isHost, setIsHost] = useState(props.location?.state?.isHost ?? false);
     const socketRef = useRef() as MutableRefObject<any>;
     const userVideo = useRef() as MutableRefObject<any>;
     const peersRef = useRef([]) as MutableRefObject<any>;
@@ -55,13 +55,7 @@ const Room = (props) => {
     const userStream = useRef() as MutableRefObject<any>;
     const [screenShare, setScreenShare] = useState(false);
     const screenTrackRef = useRef() as MutableRefObject<any>;
-    const doc = useDocumentDataOnce(firebase.firestore().collection('Rooms').doc(roomID));
-    console.log('🚀 ~ file: Room.tsx ~ line 51 ~ Room ~ doc', doc);
-
-    const isHost = props.location?.state?.isHost ?? false;
-
-    // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
-    // console.log(props.match.params);
+    const history = useHistory();
 
     const [isMuted, setIsMuted] = useState(false);
     const [isCameraOn, setIsCameraOn] = useState(false);
@@ -83,14 +77,14 @@ const Room = (props) => {
         socketRef.current = io('/');
 
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-            userVideo.current.srcObject = stream;
-            userStream.current = stream;
-            socketRef.current.emit('join room', roomID);
-            socketRef.current.on('all users', (users) => {
-                if (isHost) {
-                    console.log(socketRef.current.id);
-                    saveRoomInfo(roomID, socketRef.current.id);
-                }
+            if (isHost) {
+                userVideo.current.srcObject = stream;
+                userStream.current = stream;
+            }
+            socketRef.current.emit('join room', roomID, isHost);
+            socketRef.current.on('all users', (users, youAreTheHost) => {
+                console.log('🚀 ~ file: Room.tsx ~ line 84 ~ socketRef.current.on ~ youAreTheHost', youAreTheHost);
+                console.log('🚀 ~ file: Room.tsx ~ line 86 ~ socketRef.current.on ~ users', users);
                 const peers = [];
                 users.forEach((userID) => {
                     const peer = createPeer(userID, socketRef.current.id, stream);
@@ -98,8 +92,13 @@ const Room = (props) => {
                         peerID: userID,
                         peer
                     });
+
                     peers.push({ peerID: userID, peer });
                 });
+                if (youAreTheHost) {
+                    history.replace(`/room/${roomID}/${Math.random()}`, { isHost: true });
+                }
+                setIsHost(youAreTheHost ?? false);
                 setPeers(peers);
             });
 
@@ -208,16 +207,19 @@ const Room = (props) => {
     return (
         <Flex direction="row" p={3} h="100%">
             <Grid h="100%" w="70%" templateRows="5fr 1fr" templateColumns="repeat(8, 1fr)">
-                <GridItem rowSpan={5} colSpan={8}>
-                    <StyledVideo muted ref={userVideo} autoPlay playsInline borderRadius={2} />
-                </GridItem>
-                {peers.map((peer) => {
-                    return (
-                        <GridItem rowSpan={1} colSpan={1}>
-                            <Video key={peer.peerID} peer={peer.peer} />
-                        </GridItem>
-                    );
-                })}
+                {isHost ? (
+                    <GridItem rowSpan={5} colSpan={8}>
+                        <StyledVideo muted ref={userVideo} autoPlay playsInline borderRadius={2} />
+                    </GridItem>
+                ) : (
+                    peers.map((peer) => {
+                        return (
+                            <GridItem rowSpan={5} colSpan={8}>
+                                <Video key={peer.peerID} peer={peer.peer} />
+                            </GridItem>
+                        );
+                    })
+                )}
 
                 <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
                     <Flex
