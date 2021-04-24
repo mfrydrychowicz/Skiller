@@ -3,16 +3,17 @@ import { Redirect } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 import { FiLogOut } from 'react-icons/fi';
 
-const Logout = () => {
-    const onUserLogout = async () => {
-        try {
-            await auth.signOut();
-            return <Redirect to="/" />;
-        } catch (e) {
-            console.log(e.message);
-        }
-    };
+export const onUserLogout = async () => {
+    try {
+        await auth.signOut();
+        return <Redirect to="/" />;
+    } catch (e) {
+        console.log(e.message);
+    }
+};
 
+const Logout = () => {
+    
     return (
         <IconButton
             aria-label="Logout"

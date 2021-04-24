@@ -11,7 +11,8 @@ import { newUser } from '../../db/newUser';
 import { usePoints } from '../../hooks/usePoints';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Logout from '../Logout/Logout';
-import SpeechRecognition from 'react-speech-recognition';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { onUserLogout } from '../Logout/Logout';
 
 // Use this https://codepen.io/sosuke/pen/Pjoqqp to get filter for desired icon color
 
@@ -34,10 +35,6 @@ export default function TopNavBar() {
         } catch (error) {
             console.log(error);
         }
-    };
-
-    const logout = () => {
-        firebase.auth().signOut();
     };
 
     const { colorMode, toggleColorMode } = useColorMode();
@@ -67,21 +64,94 @@ export default function TopNavBar() {
             <SunIcon color="brand.orange" onClick={changeColorMode} h={6} w={6} />
         );
 
+
+    const commands = [
+        {
+            command: ['open (website) *', 'go to * (website)'],
+            callback: (site) => {
+            console.log('opening webiste: ', site.split(" ").join(""))
+            window.open("http://" + site.split(" ").join(""));
+            },
+        },
+        // {
+        //     command: ['select *', 'pick *', 'answer *'],
+        //     callback: (answer) => {
+        //     props.pickAnswerFunction(answer);
+        //     },
+        // },
+        {
+            command: "change to dark mode",
+            callback: () => {
+            console.log('switching to dark mode!')
+            if (colorMode === "light") {
+                toggleColorMode();
+            }
+            },
+        },
+        {
+            command: "change to light mode",
+            callback: () => {
+            console.log('switching to light mode!')
+            if (colorMode === "dark") {
+                toggleColorMode();
+            }
+            },
+        },
+        {
+            command: ['show chatroom', 'open chatroom'],
+            callback: () => {
+            console.log('opening chatroom site')
+            window.location.href = '/'
+            },
+        },
+        {
+            command: ['show ranking', 'open ranking', 'show hall of fame', 'open hall of fame'],
+            callback: () => {
+            console.log('opening ranking site')
+            window.location.href = '/halloffame'
+            },
+        },
+        {
+            command: ['log out', 'logout', 'log off'],
+            callback: () => {
+                console.log('logging out...')
+                onUserLogout();
+            },
+        },
+        {
+            command: ['mute (mic)'],
+            callback: () => {
+                SpeechRecognition.stopListening();
+            },
+        },
+        ]
+        
+    const { transcript, resetTranscript } = useSpeechRecognition({ commands });
+
     const [isListening, setIsListening] = useState(false);
+    
     const turnOnListening = () => {
         console.log('turning on listening');
-        SpeechRecognition.startListening();
         setIsListening(true);
+        SpeechRecognition.startListening({
+            continuous: true,
+            language: 'en-US',
+          })
+    
     }
+
     const turnOffListening = () => {
         console.log('turning off listening');
-        SpeechRecognition.stopListening();
         setIsListening(false);
+        SpeechRecognition.stopListening();
+        resetTranscript();
+      
     }
 
     const microphoneIcon = isListening ? 
-    <Icon as={FaMicrophoneSlash} color="brand.orange" onClick={turnOnListening} /> :
-    <Icon as={FaMicrophone} color="brand.orange" onClick={turnOffListening} />;
+    <Icon as={FaMicrophoneSlash} color="brand.orange" onClick={turnOffListening} /> :
+    <Icon as={FaMicrophone} color="brand.orange" onClick={turnOnListening} />;
+
 
     return (
         <>
@@ -108,7 +178,8 @@ export default function TopNavBar() {
 
                 {user?.uid ? (
                     <HStack spacing="2em">
-                        <Icon as={IoTrophyOutline} color="brand.orange" h={6} w={6} />
+                        <Icon as={IoTrophyOutline} color="brand.orange" h={6} w={6} 
+                        onClick={() => window.location.href = "/halloffame"} />
                         <Text mr="2" color="brand.orange">
                             {points}
                         </Text>
