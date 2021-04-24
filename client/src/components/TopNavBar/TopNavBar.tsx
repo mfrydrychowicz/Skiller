@@ -1,5 +1,5 @@
 import { Image, Flex, Heading, Text, Spacer, Icon, HStack, useColorMode, Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { IoTrophyOutline } from 'react-icons/io5';
 import { FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import { auth } from '../../firebase/firebase';
 import { useHistory } from 'react-router-dom';
 import firebase from 'firebase';
 import { newUser } from '../../db/newUser';
+import { usePoints } from '../../hooks/usePoints';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Logout from '../Logout/Logout';
 import SpeechRecognition from 'react-speech-recognition';
@@ -15,9 +16,9 @@ import SpeechRecognition from 'react-speech-recognition';
 // Use this https://codepen.io/sosuke/pen/Pjoqqp to get filter for desired icon color
 
 export default function TopNavBar() {
-    const [points, setPoints] = useState(0);
     const [user] = useAuthState(auth);
     const history = useHistory();
+    const [points, setPoints] = useState(0);
 
     const login = async () => {
         try {
@@ -38,6 +39,7 @@ export default function TopNavBar() {
     const logout = () => {
         firebase.auth().signOut();
     };
+
     const { colorMode, toggleColorMode } = useColorMode();
 
     const changeColorMode = (newMode) => {
@@ -45,6 +47,18 @@ export default function TopNavBar() {
             toggleColorMode();
         }
     };
+
+    useEffect(() => {
+        if (user) {
+            firebase
+                .firestore()
+                .collection('Users')
+                .doc(user.uid)
+                .onSnapshot((d) => {
+                    setPoints(d.data().points);
+                });
+        }
+    }, [user]);
 
     const colorModeIcon =
         colorMode === 'light' ? (
@@ -72,7 +86,7 @@ export default function TopNavBar() {
     return (
         <>
             <Flex
-                bgColor={colorMode === 'light' ? 'brand.darkgrey' : 'brand.middlegrey'}
+                bgColor={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
                 paddingX="3em"
                 height="4em"
                 alignItems="center"
@@ -96,7 +110,7 @@ export default function TopNavBar() {
                     <HStack spacing="2em">
                         <Icon as={IoTrophyOutline} color="brand.orange" h={6} w={6} />
                         <Text mr="2" color="brand.orange">
-                            {points} pt.
+                            {points}
                         </Text>
                         <Text mr="2" color="brand.orange">
                             {user.displayName}
@@ -106,7 +120,7 @@ export default function TopNavBar() {
                         <Logout />
                     </HStack>
                 ) : (
-                    <Button colorScheme="orange" variant="solid" size="md" onClick={login}>
+                    <Button color="brand.orange" variant="solid" size="md" onClick={login}>
                         Register/ Login
                     </Button>
                 )}

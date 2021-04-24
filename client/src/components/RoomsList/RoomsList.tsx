@@ -25,7 +25,9 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link, useHistory } from 'react-router-dom';
 import { newRoom } from '../../db/newRoom';
 import RoomCard from './RoomCard/RoomCard';
-import { AddIcon, CheckIcon, SearchIcon } from '@chakra-ui/icons';
+import { AddIcon, CloseIcon, CheckIcon, SearchIcon } from '@chakra-ui/icons';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase/firebase';
 
 const RoomsList = () => {
     const [roomName, setRoomName] = useState('');
@@ -33,6 +35,7 @@ const RoomsList = () => {
     const [rooms, loading, error] = useCollection(firebase.firestore().collection('Rooms'), {
         snapshotListenOptions: { includeMetadataChanges: true }
     });
+    const [user] = useAuthState(auth);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = useRef();
@@ -43,58 +46,57 @@ const RoomsList = () => {
 
     const handleRoomNameSubmit = async () => {
         setRoomName('');
-        const id = await newRoom(roomName);
+        const id = await newRoom(roomName, {
+            userId: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL
+        });
         console.log('🚀 ~ file: RoomsList.tsx ~ line 23 ~ handleRoomNameSubmit ~ id', id);
         history.push(`/room/${id}`, { isHost: true });
     };
 
     const { colorMode } = useColorMode();
 
-    if (loading) return <Spinner />;
+    if (loading)
+        return (
+            <Box Box position="absolute" top="50%" left="50%">
+                <Spinner thickness="8px" speed="0.65s" emptyColor="gray.200" color="brand.orange" size="xl"></Spinner>
+            </Box>
+        );
 
     return (
         <>
-            <Box d="flex" flexDirection="row" justifyContent="space-around" m={2}>
+            <Box d="flex" flexDirection="row" justifyContent="space-between" m={4}>
                 <InputGroup w="30%">
                     <InputLeftElement pointerEvents="none" children={<Icon as={SearchIcon} />} />
-                    <Input type="room" placeholder="Find room" />
+                    <Input
+                        type="room"
+                        placeholder="Find room"
+                        backgroundColor={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
+                    />
                 </InputGroup>
                 <Button
                     leftIcon={<AddIcon />}
                     sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
                     onClick={onOpen}
-                    colorScheme="orange"
+                    color="brand.orange"
                 >
                     {' '}
                     Add New Room
                 </Button>
             </Box>
-            <Flex
-                wrap="wrap"
-                maxWidth="100%"
-                justify="center"
-                bg={colorMode === 'light' ? 'brand.lightgray' : 'brand.white'}
-            >
-                <Text w="100%" pl={16} fontWeight="bold">
-                    Active rooms
-                </Text>
+
+            <Text w="100%" fontWeight="bold" mt={5} textAlign="center" fontSize="2em" color="brand.orange">
+                Active rooms
+            </Text>
+
+            <Flex wrap="wrap" maxWidth="100%" minHeight="86vh" justify="center">
                 {rooms.docs.map((room) => (
                     <Box m="20px" key={room.id} w="30%">
-                        <Link to={`/room/${room.id}`}>
-                            <RoomCard id={room.id} name={room.data().name} />
-                        </Link>
+                        <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
                     </Box>
                 ))}
             </Flex>
-            <Button
-                leftIcon={<AddIcon />}
-                sx={{ position: 'inherit', bottom: '25px', right: '35px', zIndex: '10' }}
-                onClick={onOpen}
-                colorScheme="orange"
-            >
-                {' '}
-                Add New Room
-            </Button>
             <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
                 <DrawerOverlay>
                     <DrawerContent>
@@ -115,7 +117,7 @@ const RoomsList = () => {
                                 <Button
                                     leftIcon={<CheckIcon />}
                                     variant="solid"
-                                    colorScheme="blue"
+                                    color="brand.orange"
                                     onClick={handleRoomNameSubmit}
                                     align="baseline"
                                 >

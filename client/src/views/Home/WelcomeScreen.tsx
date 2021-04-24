@@ -21,12 +21,9 @@ export const WelcomeScreen = (): ReactElement => {
     const MotionButton = motion(Button);
     const buttonVariants = {
         hover: {
-            scale: 1.2,
-            textShadow: '0px 0px 8px rgb(255,255,255)',
-            boxShadow: '0px 0px 8px rgb(255,255,255)',
+            scale: 1.05,
             transition: {
-                duration: 0.3,
-                yoyo: 5
+                duration: 0.3
             }
         }
     };
@@ -120,9 +117,9 @@ export const WelcomeScreen = (): ReactElement => {
             <Box d="flex" justifyContent="center" alignItems="center">
                 <MotionButton
                     width="30%"
-                    colorScheme="orange"
-                    variant="solid"
+                    color="brand.orange"
                     size="lg"
+                    col="brand.white"
                     variants={buttonVariants}
                     whileHover="hover"
                     onClick={login}

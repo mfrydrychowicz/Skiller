@@ -2,6 +2,7 @@ import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
+import { AiOutlineLike } from 'react-icons/ai';
 
 import { Icon, Box, HStack, Flex, Grid, GridItem, useColorMode } from '@chakra-ui/react';
 import { FiCamera, FiCameraOff, FiMic, FiMicOff, FiLogOut } from 'react-icons/fi';
@@ -10,6 +11,8 @@ import { IoHandRight, IoHandRightOutline } from 'react-icons/io5';
 import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 
 import ChatBox from '../components/Chat/ChatBox';
+import { usePoints } from '../hooks/usePoints';
+import { saveRoomInfo } from '../db/saveRoomInfo';
 import { useDocumentDataOnce, useDocumentOnce } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase';
 import { useHistory } from 'react-router-dom';
@@ -28,10 +31,6 @@ const StyledChat = styled.div`
     width: 30%;
     border-radius: 10px;
 `;
-
-StyledChat.defaultProps = {
-    colormode: 'light'
-};
 
 const Video = (props) => {
     const ref = useRef() as MutableRefObject<any>;
@@ -272,7 +271,7 @@ const Room = (props) => {
     };
 
     return (
-        <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.white'}>
+        <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.lightgrey' : 'brand.middlegrey'}>
             <Grid h="100%" w="70%" templateRows="5fr 1fr" templateColumns="repeat(8, 1fr)">
                 {isHost ? (
                     <GridItem rowSpan={5} colSpan={8}>
@@ -288,10 +287,10 @@ const Room = (props) => {
                     })
                 )}
 
-                <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
+                <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={4} mb={4}>
                     <Flex
                         flexDirection="row"
-                        bgColor="brand.darkgrey"
+                        bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.darkgrey'}
                         borderColor="brand.orange"
                         display="inline-flex"
                         alignItems="center"
@@ -343,7 +342,7 @@ const Room = (props) => {
             <StyledChat>
                 <ChatBox roomID={roomID} />
             </StyledChat>
-            {/* <QuizController roomId={roomID} /> */}
+            <QuizController roomId={roomID} />
         </Flex>
     );
 };

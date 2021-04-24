@@ -1,14 +1,21 @@
 import axios from 'axios';
 import {
-  Button, ButtonGroup, Heading,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  useDisclosure,
-} from "@chakra-ui/react"
+    Button,
+    ButtonGroup,
+    Heading,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalBody,
+    useDisclosure,
+    IconButton
+} from '@chakra-ui/react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { VoiceActions } from './VoiceActions';
+import { addPoints } from '../db/addPoints';
+import { auth } from '../firebase/firebase';
+import { useState } from 'react';
 
 interface QuizQuestion {
     question: string;
@@ -17,16 +24,17 @@ interface QuizQuestion {
 }
 
 export const DisplayQuiz = ({ question, answers, correctAnswer }: QuizQuestion) => {
+    const [user] = useAuthState(auth);
+    const [isOpen, setIsOpen] = useState(true);
     const { onClose } = useDisclosure();
 
     const sendAnswer = (isCorrect: boolean) => {
-        try {
-            axios.post('/api/quiz', {
-                isCorrect
-            });
-        } catch (error) {
-            console.log('something went wrong when sending quiz answer...', error);
+        console.log('🚀 ~ file: DisplayQuiz.tsx ~ line 34 ~ sendAnswer ~ isCorrect', isCorrect);
+
+        if (isCorrect) {
+            addPoints(10, user);
         }
+        setIsOpen(false);
     };
 
     const handleClick = (answerIndex: number) => {
@@ -59,7 +67,7 @@ export const DisplayQuiz = ({ question, answers, correctAnswer }: QuizQuestion) 
         return String.fromCharCode(65 + index);
     };
     return (
-        <Modal isOpen={true} onClose={onClose} isCentered>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalBody mx="auto" my={5}>
@@ -75,7 +83,7 @@ export const DisplayQuiz = ({ question, answers, correctAnswer }: QuizQuestion) 
                         {answers.map((answer, index) => (
                             <Button
                                 key={answer}
-                                colorScheme="purple"
+                                color="brand.orange"
                                 size="md"
                                 variant="outline"
                                 isFullWidth={true}
