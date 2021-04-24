@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import VideoActions from '../components/VideoActions/VideoActions';
 
 import { isTemplateTail } from 'typescript';
-import { Icon, Box, IconButton, HStack, Flex, Grid } from '@chakra-ui/react';
+import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem } from '@chakra-ui/react';
 import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
 
 import ChatBox from '../components/Chat/ChatBox';
@@ -14,20 +14,13 @@ const StyledVideo = styled.video`
     background: black;
     height: 100%;
     width: 100%;
-    position: relative;
+    /* position: relative; */
 `;
 
 const StyledChat = styled.div`
     height: 100%;
     width: 30%;
     borderradius: 10px;
-`;
-
-const HostStyledVideo = styled.video`
-    height: 80%;
-    width: 60%;
-    margin: 0 auto;
-    position: absolute;
 `;
 
 const Video = (props) => {
@@ -39,16 +32,7 @@ const Video = (props) => {
         });
     }, []);
 
-    return props.isHost ? (
-        <HostStyledVideo playsInline autoPlay ref={ref} />
-    ) : (
-        <StyledVideo playsInline autoPlay ref={ref} />
-    );
-};
-
-const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2
+    return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
 const Room = (props) => {
@@ -63,7 +47,7 @@ const Room = (props) => {
     // console.log(props.match.params);
     useEffect(() => {
         socketRef.current = io('/');
-        navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then((stream) => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit('join room', roomID);
             socketRef.current.on('all users', (users) => {
@@ -145,16 +129,22 @@ const Room = (props) => {
     }
 
     return (
-        <Flex direction="row" m={3}>
-            <Box w="70%">
-                <StyledVideo muted ref={userVideo} autoPlay playsInline h="700" borderRadius={2} />
+        <Flex direction="row" p={3} h="100%">
+            <Grid h="100%" w="70%" templateRows="5fr 1fr" templateColumns="repeat(8, 1fr)">
+                <GridItem rowSpan={5} colSpan={8}>
+                    <StyledVideo muted ref={userVideo} autoPlay playsInline borderRadius={2} />
+                </GridItem>
                 {peers.map((peer) => {
-                    return <Video key={peer.peerID} peer={peer.peer} />;
+                    return (
+                        <GridItem rowSpan={1} colSpan={1}>
+                            <Video key={peer.peerID} peer={peer.peer} />
+                        </GridItem>
+                    );
                 })}
                 <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
                     <VideoActions></VideoActions>
                 </Box>
-            </Box>
+            </Grid>
             <StyledChat>
                 <ChatBox roomID={roomID} />
             </StyledChat>

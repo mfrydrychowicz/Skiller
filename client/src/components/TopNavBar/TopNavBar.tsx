@@ -8,7 +8,7 @@ export default function TopNavBar() {
     const [points, setPoints] = useState(0);
 
     return (
-        <Flex bgColor="red" paddingX="3em" height="4em" alignItems="center">
+        <Flex bgColor="red" paddingX="3em" height="4rem" alignItems="center">
             <Link to="/">
                 <HStack spacing="1em">
                     <Image src="./logo.svg" alt="Skiller logo" height="3em" />

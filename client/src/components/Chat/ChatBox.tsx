@@ -15,10 +15,10 @@ const ChatBox = ({ roomID }) => {
 
     const { messages, loading, error, sendMessage } = useChat(roomID);
     return (
-        <Container maxW="container.sm">
-            <Box padding="4" bg="gray.700" d="flex" alignItems="baseline" justify="left" height="600">
-                <VStack direction="column" width="100%">
-                    <VStack overflowY="auto" height="500" width="100%">
+        <Container maxW="container.sm" height="100%">
+            <Box padding="4" bg="gray.700" d="flex" direction="column" justifyContent="space-between" height="100%">
+                <VStack width="100%">
+                    <VStack overflowY="auto" height="90%" width="100%">
                         {loading ? (
                             <Spinner size="lg" thickness="4px" speed="0.65s" emptyColor="gray.200" color="orange.500" />
                         ) : (
