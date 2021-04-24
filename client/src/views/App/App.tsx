@@ -9,6 +9,7 @@ import Login from '../Login/Login';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 import TopNavBar from '../../components/TopNavBar/TopNavBar';
 import NewQuestion from '../../components/new-question/NewQuestion';
+import { HallOfFame } from '../HallOfFame';
 
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
@@ -30,6 +31,7 @@ const App = (): ReactElement => {
                     <Switch>
                         <PrivateRoute exact path="/" component={Home} />
                         <PrivateRoute exact path="/room/:roomId" component={Room} />
+                        <Route exact path="/halloffame" component={HallOfFame} />
                         <Route exact path="/login" component={Login} />
                         <Route component={NotFound} />
                     </Switch>
