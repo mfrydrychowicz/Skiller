@@ -2,6 +2,7 @@ import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
+import useChat from '../hooks/useChat';
 
 const Container = styled.div`
     padding: 20px;
@@ -39,11 +40,11 @@ const Room = (props) => {
     const socketRef = useRef() as MutableRefObject<any>;
     const userVideo = useRef() as MutableRefObject<any>;
     const peersRef = useRef([]) as MutableRefObject<any>;
-    const roomID = props.match.params.roomID;
+    const roomID = props.match.params.roomId;
+    const { messages, loading, error, sendMessage } = useChat(roomID);
     const isHost = props.location?.state?.isHost ?? false;
-    console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
-    console.log(props.match.params);
-
+    // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
+    // console.log(props.match.params);
     useEffect(() => {
         socketRef.current = io('/');
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then((stream) => {
