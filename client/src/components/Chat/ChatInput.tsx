@@ -1,6 +1,6 @@
 import { Container, Box, HStack, IconButton, Icon, useColorMode } from '@chakra-ui/react';
 import { Textarea } from '@chakra-ui/react';
-import { useState } from 'react';
+import { MutableRefObject, useRef, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
 import Picker from 'emoji-picker-react';
 
@@ -16,12 +16,21 @@ const ChatInput = ({ onSubmit }) => {
         setValue('');
     };
     const { colorMode } = useColorMode();
+    const toogleEmojiState = () => {
+        setEmojiShown(!emojiShown);
+    };
+
+    const inputRef = useRef() as MutableRefObject<any>;
+
     const onEmojiClick = (e, emojiObject) => {
         let emoji = emojiObject.emoji;
         setValue(value + emoji);
-    };
-    const toogleEmojiState = () => {
-        setEmojiShown(!emojiShown);
+        toogleEmojiState();
+        console.log(inputRef.current);
+        inputRef.current.focus();
+        inputRef.current.select();
+        inputRef.current.click();
+        inputRef.current.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length);
     };
 
     if (emojiShown) {
@@ -42,6 +51,8 @@ const ChatInput = ({ onSubmit }) => {
                         {'😎'}
                     </Box>
                     <Textarea
+                        autoFocus
+                        ref={inputRef}
                         value={value}
                         onChange={handleChange}
                         size="md"
@@ -83,6 +94,8 @@ const ChatInput = ({ onSubmit }) => {
                         </Box>
                     </span>
                     <Textarea
+                        autoFocus
+                        ref={inputRef}
                         value={value}
                         onChange={handleChange}
                         size="md"

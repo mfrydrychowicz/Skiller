@@ -57,6 +57,10 @@ const Room = (props) => {
 
     const { colorMode } = useColorMode();
 
+    const [userVideoAudio, setUserVideoAudio] = useState({
+        localUser: { video: true, audio: true }
+    });
+
     // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
     // console.log(props.match.params);
     const history = useHistory();
@@ -103,12 +107,12 @@ const Room = (props) => {
                     });
 
                     peers.push({ peerID: userID, peer });
-                    // setUserVideoAudio((preList) => {
-                    //     return {
-                    //         ...preList,
-                    //         [peer.userName]: { video, audio }
-                    //     };
-                    // });
+                    setUserVideoAudio((preList) => {
+                        return {
+                            ...preList,
+                            [peer.userName]: { video, audio }
+                        };
+                    });
                 });
                 if (youAreTheHost) {
                     history.replace(`/room/${roomID}/${Math.random()}`, { isHost: true });
@@ -195,36 +199,36 @@ const Room = (props) => {
         return peer;
     }
 
-    // const toggleCameraAudio = (e) => {
-    //     const target = e.target.getAttribute('data-switch');
+    const toggleCameraAudio = (e) => {
+        const target = e.target.getAttribute('data-switch');
 
-    //     console.log(target);
+        console.log(target);
 
-    //     setUserVideoAudio((preList) => {
-    //         let videoSwitch = preList['localUser'].video;
-    //         let audioSwitch = preList['localUser'].audio;
+        setUserVideoAudio((preList) => {
+            let videoSwitch = preList['localUser'].video;
+            let audioSwitch = preList['localUser'].audio;
 
-    //         if (target === 'video') {
-    //             const userVideoTrack = userVideo.current.srcObject.getVideoTracks()[0];
-    //             videoSwitch = !videoSwitch;
-    //             userVideoTrack.enabled = videoSwitch;
-    //         } else {
-    //             const userAudioTrack = userVideo.current.srcObject.getAudioTracks()[0];
-    //             audioSwitch = !audioSwitch;
+            if (target === 'video') {
+                const userVideoTrack = userVideo.current.srcObject.getVideoTracks()[0];
+                videoSwitch = !videoSwitch;
+                userVideoTrack.enabled = videoSwitch;
+            } else {
+                const userAudioTrack = userVideo.current.srcObject.getAudioTracks()[0];
+                audioSwitch = !audioSwitch;
 
-    //             if (userAudioTrack) {
-    //                 userAudioTrack.enabled = audioSwitch;
-    //             } else {
-    //                 userStream.current.getAudioTracks()[0].enabled = audioSwitch;
-    //             }
-    //         }
+                if (userAudioTrack) {
+                    userAudioTrack.enabled = audioSwitch;
+                } else {
+                    userStream.current.getAudioTracks()[0].enabled = audioSwitch;
+                }
+            }
 
-    //         return {
-    //             ...preList,
-    //             localUser: { video: videoSwitch, audio: audioSwitch }
-    //         };
-    //     });
-    // };
+            return {
+                ...preList,
+                localUser: { video: videoSwitch, audio: audioSwitch }
+            };
+        });
+    };
 
     const goToBack = (e) => {
         e.preventDefault();
@@ -286,58 +290,56 @@ const Room = (props) => {
                         );
                     })
                 )}
-
-                <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={4} mb={4}>
-                    <Flex
-                        flexDirection="row"
-                        bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.darkgrey'}
-                        borderColor="brand.orange"
-                        display="inline-flex"
-                        alignItems="center"
-                        paddingX={4}
-                        paddingY={3}
-                        rounded="md"
-                    >
-                        <HStack spacing="2em" _hover={{ cursor: 'pointer' }}>
-                            {/* <div onClick={toggleCameraAudio} data-switch="video">
-                                {'camera'}
-                            </div>
-                            <div onClick={toggleCameraAudio} data-switch="audio">
-                                audio
-                            </div> */}
-                            <Icon
-                                as={isCameraOn ? FiCameraOff : FiCamera}
-                                onClick={handleCamera}
-                                h={6}
-                                w={6}
-                                color="brand.orange"
-                            />
-                            <Icon
-                                as={isMuted ? FiMicOff : FiMic}
-                                onClick={handleMute}
-                                h={6}
-                                w={6}
-                                color="brand.orange"
-                            />
-                            <Icon
-                                as={isHandRaised ? IoHandRight : IoHandRightOutline}
-                                onClick={handleHandRaise}
-                                h={6}
-                                w={6}
-                                color="brand.orange"
-                            />
-                            <Icon
-                                as={screenShare ? MdStopScreenShare : MdScreenShare}
-                                onClick={clickScreenSharing}
-                                h={6}
-                                w={6}
-                                color="brand.orange"
-                            />
-                            <NewQuestion roomId={roomID} />
-                            <Icon as={FiLogOut} onClick={goToBack} h={6} w={6} color="brand.orange" />
-                        </HStack>
-                    </Flex>
-                </Box>
+                {isHost ? (
+                    <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={4} mb={4}>
+                        <Flex
+                            flexDirection="row"
+                            bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.darkgrey'}
+                            borderColor="brand.orange"
+                            display="inline-flex"
+                            alignItems="center"
+                            paddingX={4}
+                            paddingY={3}
+                            rounded="md"
+                        >
+                            <HStack spacing="2em" _hover={{ cursor: 'pointer' }}>
+                                <div onClick={toggleCameraAudio} data-switch="video">
+                                    <Icon
+                                        onClick={toggleCameraAudio}
+                                        onClick={handleCamera}
+                                        data-switch="video"
+                                        as={isCameraOn ? FiCameraOff : FiCamera}
+                                        h={6}
+                                        w={6}
+                                        color="brand.orange"
+                                    />
+                                </div>
+                                <div onClick={toggleCameraAudio} data-switch="audio">
+                                    <Icon
+                                        onClick={toggleCameraAudio}
+                                        data-switch="audio"
+                                        as={isMuted ? FiMicOff : FiMic}
+                                        onClick={handleMute}
+                                        h={6}
+                                        w={6}
+                                        color="brand.orange"
+                                    />
+                                </div>
+                                <Icon
+                                    as={screenShare ? MdStopScreenShare : MdScreenShare}
+                                    onClick={clickScreenSharing}
+                                    h={6}
+                                    w={6}
+                                    color="brand.orange"
+                                />
+                                <NewQuestion roomId={roomID} />
+                                <Icon as={FiLogOut} onClick={goToBack} h={6} w={6} color="brand.orange" />
+                            </HStack>
+                        </Flex>
+                    </Box>
+                ) : (
+                    <div></div>
+                )}
             </Grid>
             <StyledChat>
                 <ChatBox roomID={roomID} />

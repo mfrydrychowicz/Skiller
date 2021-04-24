@@ -67,7 +67,7 @@ const RoomsList = () => {
     return (
         <>
             <Box d="flex" flexDirection="row" justifyContent="space-between" m={4}>
-                <InputGroup w="30%">
+                <InputGroup w="30%" display="none">
                     <InputLeftElement pointerEvents="none" children={<Icon as={SearchIcon} />} />
                     <Input
                         type="room"
@@ -93,7 +93,9 @@ const RoomsList = () => {
             <Flex wrap="wrap" maxWidth="100%" minHeight="86vh" justify="center">
                 {rooms.docs.map((room) => (
                     <Box m="20px" key={room.id} w="30%">
-                        <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
+                        <Link to={`/room/${room.id}`}>
+                            <RoomCard id={room.id} name={room.data().name} user={room.data().user} />
+                        </Link>
                     </Box>
                 ))}
             </Flex>
