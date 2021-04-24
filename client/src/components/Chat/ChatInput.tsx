@@ -1,4 +1,4 @@
-import { Container, Box, HStack, IconButton, Icon } from '@chakra-ui/react';
+import { Container, Box, HStack, IconButton, Icon, useColorMode } from '@chakra-ui/react';
 import { Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
@@ -10,6 +10,8 @@ const ChatInput = ({ onSubmit }) => {
         if (value.trim().length > 0) onSubmit(value);
         setValue('');
     };
+    const { colorMode } = useColorMode();
+
     return (
         <HStack display="flex" alignItems="start" width="100%">
             <Textarea
@@ -22,9 +24,9 @@ const ChatInput = ({ onSubmit }) => {
                 max-rows={20}
                 minHeight="2.5em"
                 height="2.5em"
-                bgColor="brand.middlegrey"
-                borderColor="brand.middlegrey"
-                color="brand.lightgrey"
+                bgColor={colorMode === 'light' ? 'brand.lightgrey' : 'brand.middlegrey'}
+                borderColor={colorMode === 'light' ? 'brand.lightgrey' : 'brand.middlegrey'}
+                color={colorMode === 'light' ? 'brand.middlegrey' : 'brand.lightgrey'}
                 focusBorderColor="brand.orange"
             />
             <IconButton

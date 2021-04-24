@@ -30,10 +30,6 @@ const StyledChat = styled.div`
     border-radius: 10px;
 `;
 
-StyledChat.defaultProps = {
-    colormode: 'light'
-};
-
 const Video = (props) => {
     const ref = useRef() as MutableRefObject<any>;
 
@@ -273,7 +269,7 @@ const Room = (props) => {
     };
 
     return (
-        <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.white'}>
+        <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.lightgrey' : 'brand.middlegrey'}>
             <Grid h="100%" w="70%" templateRows="5fr 1fr" templateColumns="repeat(8, 1fr)">
                 {isHost ? (
                     <GridItem rowSpan={5} colSpan={8}>
@@ -289,10 +285,10 @@ const Room = (props) => {
                     })
                 )}
 
-                <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
+                <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={4} mb={4}>
                     <Flex
                         flexDirection="row"
-                        bgColor="brand.darkgrey"
+                        bgColor={colorMode === 'light' ? 'brand.middlegrey' : 'brand.darkgrey'}
                         borderColor="brand.orange"
                         display="inline-flex"
                         alignItems="center"

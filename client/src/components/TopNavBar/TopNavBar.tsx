@@ -54,7 +54,7 @@ export default function TopNavBar() {
     return (
         <>
             <Flex
-                bgColor={colorMode === 'light' ? 'brand.darkgrey' : 'brand.middlegrey'}
+                bgColor={colorMode === 'light' ? 'brand.white' : 'brand.darkgrey'}
                 paddingX="3em"
                 height="4em"
                 alignItems="center"

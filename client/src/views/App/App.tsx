@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NotFound from '../../components/NotFound';
 import Room from '../Room';
-import { Box, ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { Box, ChakraProvider, extendTheme, useColorMode } from '@chakra-ui/react';
 import { Home } from '../Home/Home';
 import { WelcomeScreen } from '../Home/WelcomeScreen';
 import Login from '../Login/Login';
@@ -13,25 +13,6 @@ import NewQuestion from '../../components/new-question/NewQuestion';
 import { HallOfFame } from '../HallOfFame';
 import { DisplayQuiz } from '../../components/DisplayQuiz';
 
-// customized colors,fonts, basically everything for Chakra (optional)
-const colors = {
-    brand: {
-        orange: '#FF6500',
-        darkgrey: '#252422',
-        middlegrey: '#403D39',
-        lightgrey: '#CCC5B9',
-        white: '#FFFCF2'
-    }
-};
-
-export const customTheme = extendTheme({
-    colors,
-    config: {
-        initialColorMode: 'dark',
-        useSystemColorMode: false
-    }
-});
-
 const App = (): ReactElement => {
     const exampleQuestion = {
         question: 'pytanie?',
@@ -39,26 +20,26 @@ const App = (): ReactElement => {
         correctAnswer: 'odpowiedz 1'
     };
 
+    const { colorMode } = useColorMode();
+
     return (
         <div>
             <BrowserRouter>
-                <ChakraProvider theme={customTheme}>
-                    <Box h="100vh" bg="brand.middlegrey">
-                        <TopNavBar />
-                        <Switch>
-                            <Box h="calc(100vh - 4rem)">
-                                <Route exact path="/start" component={WelcomeScreen} />
-                                <PrivateRoute exact path="/" component={Home} />
-                                <PrivateRoute exact path="/room/:roomId" component={Room} />
-                                <PrivateRoute exact path="/room/:roomId/:randomValue" component={Room} />
-                                <Route exact path="/halloffame" component={HallOfFame} />
-                                <Route exact path="/login" component={Login} />
-                                <Route exact path="/quiz" component={() => DisplayQuiz({ ...exampleQuestion })} />
-                                {/* <Route component={NotFound} /> */}
-                            </Box>
-                        </Switch>
-                    </Box>
-                </ChakraProvider>
+                <Box h="100vh" bg={colorMode === 'light' ? 'brand.lightgrey' : 'brand.middlegrey'}>
+                    <TopNavBar />
+                    <Switch>
+                        <Box h="calc(100vh - 4rem)">
+                            <Route exact path="/start" component={WelcomeScreen} />
+                            <PrivateRoute exact path="/" component={Home} />
+                            <PrivateRoute exact path="/room/:roomId" component={Room} />
+                            <PrivateRoute exact path="/room/:roomId/:randomValue" component={Room} />
+                            <Route exact path="/halloffame" component={HallOfFame} />
+                            <Route exact path="/login" component={Login} />
+                            <Route exact path="/quiz" component={() => DisplayQuiz({ ...exampleQuestion })} />
+                            {/* <Route component={NotFound} /> */}
+                        </Box>
+                    </Switch>
+                </Box>
             </BrowserRouter>
         </div>
     );
