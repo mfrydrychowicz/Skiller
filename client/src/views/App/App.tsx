@@ -5,6 +5,7 @@ import NotFound from '../../components/NotFound';
 import Room from '../Room';
 import { Box, ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { Home } from '../Home/Home';
+import { WelcomeScreen } from '../Home/WelcomeScreen';
 import Login from '../Login/Login';
 import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 import TopNavBar from '../../components/TopNavBar/TopNavBar';
@@ -40,6 +41,7 @@ const App = (): ReactElement => {
                         <TopNavBar />
                         <Switch>
                             <Box h="calc(100vh - 4rem)">
+                                <Route exact path="/start" component={WelcomeScreen} />
                                 <PrivateRoute exact path="/" component={Home} />
                                 <PrivateRoute exact path="/room/:roomId" component={Room} />
                                 <PrivateRoute exact path="/room/:roomId/:randomValue" component={Room} />

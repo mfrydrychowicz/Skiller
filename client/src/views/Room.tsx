@@ -56,6 +56,9 @@ const Room = (props) => {
     const [screenShare, setScreenShare] = useState(false);
     const screenTrackRef = useRef() as MutableRefObject<any>;
     const history = useHistory();
+    // const [userVideoAudio, setUserVideoAudio] = useState({
+    //     localUser: { video: true, audio: true }
+    // });
 
     const [isMuted, setIsMuted] = useState(false);
     const [isCameraOn, setIsCameraOn] = useState(false);
@@ -74,6 +77,7 @@ const Room = (props) => {
     };
 
     useEffect(() => {
+        window.addEventListener('popstate', goToBack);
         socketRef.current = io('/');
 
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
@@ -86,7 +90,8 @@ const Room = (props) => {
                 console.log('🚀 ~ file: Room.tsx ~ line 84 ~ socketRef.current.on ~ youAreTheHost', youAreTheHost);
                 console.log('🚀 ~ file: Room.tsx ~ line 86 ~ socketRef.current.on ~ users', users);
                 const peers = [];
-                users.forEach((userID) => {
+                users.forEach((userID, info) => {
+                    let { video, audio } = info;
                     const peer = createPeer(userID, socketRef.current.id, stream);
                     peersRef.current.push({
                         peerID: userID,
@@ -94,11 +99,17 @@ const Room = (props) => {
                     });
 
                     peers.push({ peerID: userID, peer });
+                    // setUserVideoAudio((preList) => {
+                    //     return {
+                    //         ...preList,
+                    //         [peer.userName]: { video, audio }
+                    //     };
+                    // });
                 });
                 if (youAreTheHost) {
                     history.replace(`/room/${roomID}/${Math.random()}`, { isHost: true });
                 }
-                setIsHost(youAreTheHost ?? false);
+
                 setPeers(peers);
             });
 
@@ -131,11 +142,24 @@ const Room = (props) => {
                 peersRef.current = peers;
                 setPeers(peers);
             });
+
+            socketRef.current.on('FE-user-leave', ({ userId, userName }) => {
+                const peerIdx = findPeer(userId);
+                peerIdx.peer.destroy();
+                setPeers((users) => {
+                    users = users.filter((user) => user.peerID !== peerIdx.peer.peerID);
+                    return [...users];
+                });
+            });
         });
         return () => {
             socketRef.current.disconnect();
         };
     }, []);
+
+    function findPeer(id) {
+        return peersRef.current.find((p) => p.peerID === id);
+    }
 
     function createPeer(userToSignal, callerID, stream) {
         const peer = new Peer({
@@ -166,6 +190,44 @@ const Room = (props) => {
 
         return peer;
     }
+
+    // const toggleCameraAudio = (e) => {
+    //     const target = e.target.getAttribute('data-switch');
+
+    //     console.log(target);
+
+    //     setUserVideoAudio((preList) => {
+    //         let videoSwitch = preList['localUser'].video;
+    //         let audioSwitch = preList['localUser'].audio;
+
+    //         if (target === 'video') {
+    //             const userVideoTrack = userVideo.current.srcObject.getVideoTracks()[0];
+    //             videoSwitch = !videoSwitch;
+    //             userVideoTrack.enabled = videoSwitch;
+    //         } else {
+    //             const userAudioTrack = userVideo.current.srcObject.getAudioTracks()[0];
+    //             audioSwitch = !audioSwitch;
+
+    //             if (userAudioTrack) {
+    //                 userAudioTrack.enabled = audioSwitch;
+    //             } else {
+    //                 userStream.current.getAudioTracks()[0].enabled = audioSwitch;
+    //             }
+    //         }
+
+    //         return {
+    //             ...preList,
+    //             localUser: { video: videoSwitch, audio: audioSwitch }
+    //         };
+    //     });
+    // };
+
+    const goToBack = (e) => {
+        e.preventDefault();
+        socketRef.current.emit('BE-leave-room', { roomID, leaver: peersRef.current.peerID });
+        window.location.reload();
+        window.location.href = '/';
+    };
 
     const clickScreenSharing = () => {
         if (!screenShare) {
@@ -232,10 +294,15 @@ const Room = (props) => {
                         rounded="md"
                     >
                         <HStack spacing="2em">
-                            <Icon as={isCameraOn ? VideocamOffOutline : VideocamOutline} onClick={handleCamera} />
-                            <Icon as={isMuted ? MicOffOutline : MicOutline} onClick={handleMute} />
+                            {/* <div onClick={toggleCameraAudio} data-switch="video">
+                                {'camera'}
+                            </div>
+                            <div onClick={toggleCameraAudio} data-switch="audio">
+                                audio
+                            </div> */}
                             <Icon as={isHandRaised ? HandRight : HandRightOutline} onClick={handleHandRaise} />
                             <Icon as={LaptopOutline} onClick={clickScreenSharing} />
+                            <div onClick={goToBack}>Leave room</div>
                         </HStack>
                     </Flex>
                 </Box>
