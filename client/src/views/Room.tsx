@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import VideoActions from '../components/VideoActions/VideoActions';
 
 import { isTemplateTail } from 'typescript';
-import { Icon, Box, IconButton, HStack, Flex, Grid } from '@chakra-ui/react';
+import { Icon, Box, IconButton, HStack, Flex, Grid, Button } from '@chakra-ui/react';
 import { FaCamera, FaHandPaper, FaMicrophoneSlash } from 'react-icons/fa';
 
 import ChatBox from '../components/Chat/ChatBox';
@@ -57,6 +57,9 @@ const Room = (props) => {
     const userVideo = useRef() as MutableRefObject<any>;
     const peersRef = useRef([]) as MutableRefObject<any>;
     const roomID = props.match.params.roomId;
+    const userStream = useRef() as MutableRefObject<any>;
+    const [screenShare, setScreenShare] = useState(false);
+    const screenTrackRef = useRef() as MutableRefObject<any>;
 
     const isHost = props.location?.state?.isHost ?? false;
     // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
@@ -65,6 +68,7 @@ const Room = (props) => {
         socketRef.current = io('/');
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then((stream) => {
             userVideo.current.srcObject = stream;
+            userStream.current = stream;
             socketRef.current.emit('join room', roomID);
             socketRef.current.on('all users', (users) => {
                 const peers = [];
@@ -144,6 +148,43 @@ const Room = (props) => {
         return peer;
     }
 
+    const clickScreenSharing = () => {
+        if (!screenShare) {
+            //@ts-ignore
+            navigator.mediaDevices.getDisplayMedia({ cursor: true }).then((stream) => {
+                const screenTrack = stream.getTracks()[0];
+
+                peersRef.current.forEach(({ peer }) => {
+                    // replaceTrack (oldTrack, newTrack, oldStream);
+                    peer.replaceTrack(
+                        peer.streams[0].getTracks().find((track) => track.kind === 'video'),
+                        screenTrack,
+                        userStream.current
+                    );
+                });
+
+                // Listen click end
+                screenTrack.onended = () => {
+                    peersRef.current.forEach(({ peer }) => {
+                        peer.replaceTrack(
+                            screenTrack,
+                            peer.streams[0].getTracks().find((track) => track.kind === 'video'),
+                            userStream.current
+                        );
+                    });
+                    userVideo.current.srcObject = userStream.current;
+                    setScreenShare(false);
+                };
+
+                userVideo.current.srcObject = stream;
+                screenTrackRef.current = screenTrack;
+                setScreenShare(true);
+            });
+        } else {
+            screenTrackRef.current.onended();
+        }
+    };
+
     return (
         <Flex direction="row" m={3}>
             <Box w="70%">
@@ -151,8 +192,9 @@ const Room = (props) => {
                 {peers.map((peer) => {
                     return <Video key={peer.peerID} peer={peer.peer} />;
                 })}
+
                 <Box d="flex" justifyContent="center" w="69%" pos="absolute" bottom={0} mb={4}>
-                    <VideoActions></VideoActions>
+                    <VideoActions clickScreenSharing={clickScreenSharing}></VideoActions>
                 </Box>
             </Box>
             <StyledChat>
