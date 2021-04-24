@@ -58,7 +58,12 @@ const RoomsList = () => {
 
     const { colorMode } = useColorMode();
 
-    if (loading) return <Spinner />;
+    if (loading)
+        return (
+            <Box Box position="absolute" top="50%" left="50%">
+                <Spinner thickness="8px" speed="0.65s" emptyColor="gray.200" color="brand.orange" size="xl"></Spinner>
+            </Box>
+        );
 
     return (
         <>
