@@ -29,7 +29,7 @@ const App = (): ReactElement => {
         <div>
             <BrowserRouter>
                 <ChakraProvider theme={customTheme}>
-                    <Box h="100vh">
+                    <Box h="100vh" bg="brand.middlegrey">
                         <TopNavBar />
                         <Switch>
                             <Box h="calc(100vh - 4rem)">
