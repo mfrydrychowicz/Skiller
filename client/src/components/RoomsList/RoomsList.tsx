@@ -2,7 +2,6 @@ import {
     Box,
     Button,
     ButtonGroup,
-    Divider,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
@@ -13,7 +12,8 @@ import {
     Flex,
     Input,
     Spinner,
-    useDisclosure
+    useDisclosure,
+    useColorMode
 } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import firebase from 'firebase';
@@ -45,11 +45,14 @@ const RoomsList = () => {
         history.push(`/room/${id}`, { isHost: true });
     };
 
+    const { colorMode } = useColorMode();
+
     if (loading) return <Spinner />;
 
     return (
         <>
-            <Flex wrap="wrap" maxWidth="100%" justify="center">
+            <Flex wrap="wrap" maxWidth="100%" justify="center"
+                bg={colorMode === "light" ? "brand.middlegrey" : "brand.white"}>
                 {rooms.docs.map((room) => (
                     <Box m="50px" key={room.id}>
                         <Link to={`/room/${room.id}`}>

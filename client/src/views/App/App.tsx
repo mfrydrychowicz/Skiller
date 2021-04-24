@@ -10,6 +10,7 @@ import PrivateRoute from '../../components/PrivateRoute/PrivateRoute';
 import TopNavBar from '../../components/TopNavBar/TopNavBar';
 import NewQuestion from '../../components/new-question/NewQuestion';
 import { HallOfFame } from '../HallOfFame';
+import { DisplayQuiz } from '../../components/DisplayQuiz';
 
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
@@ -25,6 +26,13 @@ const colors = {
 const customTheme = extendTheme({ colors });
 
 const App = (): ReactElement => {
+
+    const exampleQuestion = {
+        question: "pytanie?",
+        answers: ['odpowiedz 1', 'odpowiedz 2', 'odpowiedz 3', 'odpowiedz 4'],
+        correctAnswer: 'odpowiedz 1'
+    }
+
     return (
         <div>
             <BrowserRouter>
@@ -37,6 +45,7 @@ const App = (): ReactElement => {
                                 <PrivateRoute exact path="/room/:roomId" component={Room} />
                                 <Route exact path="/halloffame" component={HallOfFame} />
                                 <Route exact path="/login" component={Login} />
+                                <Route exact path="/quiz" component={() => DisplayQuiz({ ...exampleQuestion })} />
                                 {/* <Route component={NotFound} /> */}
                             </Box>
                         </Switch>
