@@ -1,5 +1,5 @@
 import { Container, Box, HStack, IconButton, Icon } from '@chakra-ui/react';
-import { Input } from '@chakra-ui/react';
+import { Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Send } from 'react-ionicons';
 
@@ -11,14 +11,18 @@ const ChatInput = ({ onSubmit }) => {
         setValue('');
     };
     return (
-        <HStack display="flex" alignItems="center" h="10%">
-            <Input
+        <HStack display="flex" alignItems="start" width="100%">
+            <Textarea
                 value={value}
                 onChange={handleChange}
                 size="md"
                 variant="outline"
                 placeholder="Type sth here"
                 bg="whiteAlpha"
+                rows={1}
+                max-rows={20}
+                minHeight="2.5em"
+                height="2.5em"
             />
             <IconButton aria-label="Send" onClick={sendMessage} icon={<Icon as={Send} color="brand.orange" />} />
         </HStack>

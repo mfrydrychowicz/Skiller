@@ -25,7 +25,7 @@ const ChatBox = ({ roomID }) => {
                 height="100%"
             >
                 <VStack width="100%">
-                    <VStack overflowY="auto" height="90%" width="100%">
+                    <VStack overflowY="auto" height="100%" width="100%">
                         {loading ? (
                             <Spinner
                                 size="lg"
