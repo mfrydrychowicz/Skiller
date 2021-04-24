@@ -15,7 +15,7 @@ import Logout from '../Logout/Logout';
 
 export default function TopNavBar() {
     const [user] = useAuthState(auth);
-    const [points, plusOne] = usePoints(user.uid);
+    const [points, plusOne, lod, err] = usePoints();
     const history = useHistory();
 
     const login = async () => {
@@ -40,8 +40,7 @@ export default function TopNavBar() {
     const { colorMode, toggleColorMode } = useColorMode();
 
     const LikeMe = () => {
-        console.log(plusOne);
-        plusOne();
+        console.log(plusOne());
     };
 
     const changeColorMode = (newMode) => {

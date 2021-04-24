@@ -4,16 +4,27 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useDocumentDataOnce, useDocument } from 'react-firebase-hooks/firestore';
 import { auth } from '../firebase/firebase';
 
-export const usePoints = (userID) => {
-    const [value, loading, error] = useDocument(firebase.firestore().collection('Users').doc(userID), {
-        snapshotListenOptions: { includeMetadataChanges: true }
-    });
+export const usePoints = (userID?) => {
+    const [user] = useAuthState(auth);
+    const [value, loading, error] = useDocument(
+        firebase
+            .firestore()
+            .collection('Users')
+            .doc(userID || user?.uid || 'nope'),
+        {
+            snapshotListenOptions: { includeMetadataChanges: true }
+        }
+    );
 
     const plusOne = () => {
-        firebase.firestore().collection('Users').doc(userID).update({ points: 100 });
+        firebase
+            .firestore()
+            .collection('Users')
+            .doc(userID)
+            .update({ points: value?.data().points + 1 });
     };
-    console.log(value);
-    return [value, plusOne, loading, error];
+    console.log(value?.data());
+    return [value?.data().points, plusOne, loading, error];
 };
 
 export const useGetPoints = () => {
