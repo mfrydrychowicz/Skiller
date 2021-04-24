@@ -53,11 +53,8 @@ const Room = (props) => {
     const userStream = useRef() as MutableRefObject<any>;
     const [screenShare, setScreenShare] = useState(false);
     const screenTrackRef = useRef() as MutableRefObject<any>;
-    const doc = useDocumentDataOnce(firebase.firestore().collection('Rooms').doc(roomID));
 
     const { colorMode } = useColorMode();
-
-    const isHost = props.location?.state?.isHost ?? false;
 
     // console.log('🚀 ~ file: Room.tsx ~ line 44 ~ Room ~ isHost', isHost);
     // console.log(props.match.params);
