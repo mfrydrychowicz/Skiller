@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { Box, Flex, Button, Text, Avatar } from '@chakra-ui/react';
-=======
 import { Box, Flex, Heading, Button, Text, Avatar, useColorMode } from '@chakra-ui/react';
 import React from 'react';
->>>>>>> 9f1c6b15fe657c6f876dfa771a7e2c3f6c734029
 import styles from './RoomCard.style';
 import { AddIcon } from '@chakra-ui/icons';
 import { useHistory } from 'react-router-dom';
