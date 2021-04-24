@@ -2,6 +2,7 @@ import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import styled from 'styled-components';
+import { AiOutlineLike } from 'react-icons/ai';
 
 import { isTemplateTail } from 'typescript';
 import { Icon, Box, IconButton, HStack, Flex, Grid, GridItem, Button, useColorMode } from '@chakra-ui/react';
@@ -11,6 +12,8 @@ import { IoHandRight, IoHandRightOutline } from 'react-icons/io5';
 import { MdScreenShare, MdStopScreenShare } from 'react-icons/md';
 
 import ChatBox from '../components/Chat/ChatBox';
+import { usePoints } from '../hooks/usePoints';
+import { saveRoomInfo } from '../db/saveRoomInfo';
 import { useDocumentDataOnce, useDocumentOnce } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase';
 import { useHistory } from 'react-router-dom';
@@ -267,6 +270,7 @@ const Room = (props) => {
             screenTrackRef.current.onended();
         }
     };
+    const [likes, LikePresentation] = usePoints('ajdi');
 
     return (
         <Flex direction="row" p={3} h="100%" bgColor={colorMode === 'light' ? 'brand.lightgrey' : 'brand.middlegrey'}>
@@ -340,7 +344,7 @@ const Room = (props) => {
             <StyledChat>
                 <ChatBox roomID={roomID} />
             </StyledChat>
-            {/* <QuizController roomId={roomID} /> */}
+            <QuizController roomId={roomID} />
         </Flex>
     );
 };

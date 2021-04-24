@@ -20,17 +20,10 @@ interface QuizQuestion {
 }
 
 export const DisplayQuiz = ({ question, answers, correctAnswer }: QuizQuestion) => {
+    console.log('🚀 ~ file: DisplayQuiz.tsx ~ line 23 ~ DisplayQuiz ~ question', question);
     const { onClose } = useDisclosure();
 
-    const sendAnswer = (isCorrect: boolean) => {
-        try {
-            axios.post('/api/quiz', {
-                isCorrect
-            });
-        } catch (error) {
-            console.log('something went wrong when sending quiz answer...', error);
-        }
-    };
+    const sendAnswer = (isCorrect: boolean) => {};
 
     const handleClick = (answerIndex: number) => {
         console.log('clicked: ', answerIndex);

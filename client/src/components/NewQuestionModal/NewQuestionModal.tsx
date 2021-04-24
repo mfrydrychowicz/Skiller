@@ -19,6 +19,7 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import { IQuizQuestion } from '../../interfaces/QuizQuestion.interface';
 import { addNewQuiz } from '../../db/newQuizQuestion';
+import { useRouteMatch } from 'react-router-dom';
 
 type props = {
     isOpen: boolean;
@@ -31,6 +32,8 @@ const NewQuestionModal = ({ isOpen, onClose }: props) => {
     const [notCorrect1, setNotCorrect1] = useState<string>('');
     const [notCorrect2, setNotCorrect2] = useState<string>('');
     const [notCorrect3, setNotCorrect3] = useState<string>('');
+    const match: any = useRouteMatch();
+    const roomId = match.params?.roomId;
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -40,9 +43,7 @@ const NewQuestionModal = ({ isOpen, onClose }: props) => {
             correctAnswer: correctAnswer
         };
 
-        const quizQuestion = await addNewQuiz(questionFromUser);
-
-        console.log('🚀 ~ file: NewQuestionModal.tsx ~ line 41 ~ handleSubmit ~ quiz', quizQuestion);
+        const quizQuestion = await addNewQuiz(questionFromUser, roomId);
 
         onClose();
     };
@@ -66,17 +67,17 @@ const NewQuestionModal = ({ isOpen, onClose }: props) => {
                         </FormControl>
 
                         <FormControl id="notCorrectAnswer1" mb={5}>
-                            <FormLabel> Incorrect Answer</FormLabel>
+                            <FormLabel> Incrrect Answer</FormLabel>
                             <Input isRequired onChange={(e) => setNotCorrect1(e.target.value)} />
                         </FormControl>
 
                         <FormControl id="notCorrectAnswer2" mb={5}>
-                            <FormLabel> Incorrect Answer</FormLabel>
+                            <FormLabel> Incrrect Answer</FormLabel>
                             <Input isRequired onChange={(e) => setNotCorrect2(e.target.value)} />
                         </FormControl>
 
                         <FormControl id="notCorrectAnswer3" mb={5}>
-                            <FormLabel> Incorrect Answer</FormLabel>
+                            <FormLabel> Incrrect Answer</FormLabel>
                             <Input isRequired onChange={(e) => setNotCorrect3(e.target.value)} />
                         </FormControl>
                         <Button
