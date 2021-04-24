@@ -14,9 +14,11 @@ import { HallOfFame } from '../HallOfFame';
 // customized colors,fonts, basically everything for Chakra (optional)
 const colors = {
     brand: {
-        900: '#1a365d',
-        800: '#153e75',
-        700: '#2a69ac'
+        orange: '#FF6500',
+        darkgrey: '#252422',
+        middlegrey: '#403D39',
+        lightgrey: '#CCC5B9',
+        white: '#FFFCF2'
     }
 };
 
