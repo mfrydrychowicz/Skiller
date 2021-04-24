@@ -14,7 +14,7 @@ type Messages = {
 
 const useChat = (roomId) => {
     const collectionRef = firebase.firestore().collection('Messages');
-    const query = collectionRef;
+    const query = collectionRef.where('roomId', '==', roomId);
     const [messages, loading, error] = useCollectionData<Messages>(query, { idField: 'id' });
     const [user] = useAuthState(auth);
 
